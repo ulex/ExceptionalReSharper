@@ -31,3 +31,7 @@ _ReSharper*/
 /Exceptional.sln.GhostDoc.xml
 /src/packages
 .vs/
+.vscode/
+pack/
+
+!build/MSBuildTasks/**
