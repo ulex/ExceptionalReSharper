@@ -1,7 +1,10 @@
-﻿using System.Security;
+﻿using System;
+using System.Linq;
 
-namespace Exceptional.Playground.Issues
+namespace Exceptional.Playground.Fixed
 {
+    using System.Security;
+
     // https://exceptional.codeplex.com/workitem/11011
 
     public interface IInterfaceAbstractExceptions
