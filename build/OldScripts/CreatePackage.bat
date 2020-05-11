@@ -1,1 +1,1 @@
-nuget pack ExceptionalDevs.Exceptional.nuspec -OutputDirectory Packages
+nuget pack ExceptionalDevs.Exceptional.nuspec -OutputDirectory ../Packages

@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ExceptionalDevs.Exceptional</id>
-    <version>23.6</version>
+    <version>0.24.0.0</version>
     <title>Exceptional for ReSharper</title>
     <description>Analyzes thrown and documented C# exceptions and suggests improvements.</description>
     <authors>ExceptionalDevs</authors>
@@ -15,7 +15,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\src\Exceptional\bin\Release\ReSharper.Exceptional.dll" target="DotFiles" />
-    <file src="..\src\Exceptional\bin\Release\ReSharper.Exceptional.pdb" target="DotFiles" />
+    <file src="..\..\src\Exceptional\bin\Release\ReSharper.Exceptional.dll" target="DotFiles" />
+    <file src="..\..\src\Exceptional\bin\Release\ReSharper.Exceptional.pdb" target="DotFiles" />
   </files>
 </package>
