@@ -1,4 +1,4 @@
-$workspace = ([System.IO.FileInfo] $PSCommandPath).Directory.Parent.FullName
+$workspace = ($PSCommandPath).Directory.Parent.FullName
 $solutionDirectory = Join-Path $workspace "src"
 $solutionPath = Join-Path $solutionDirectory "Exceptional.sln"
 $projectDirectory = Join-Path $solutionDirectory "Exceptional"
@@ -17,4 +17,4 @@ $newVersion = [version]::new($oldVersion.Major, $oldVersion.Minor, $newBuildVers
 $directoryBuildProperties.Project.PropertyGroup.Version = $newVersion.ToString()
 $directoryBuildProperties.Save($directoryBuildPropertiesPath)
 
-MSBuild $solutionPath /t:Exceptional:UpdateAssemblyInfo
+MSBuild.exe $solutionPath /t:Exceptional:UpdateAssemblyInfo
