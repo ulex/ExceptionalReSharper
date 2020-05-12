@@ -1,11 +1,26 @@
 # Local Build, Installation And Development Guide
 
-## Local Build
+## Local Build & Installation
+1. Old Scripts
+    - Colne the Repo (C: is recommended)
+    - Build it in VS
+    - Change directory to the build directory `cd path\to\ExceptionalReSharper\build\OldScripts\`
+    - Run `CreatePackage.bat`
+    - Now you should find a new package in `path\to\ExceptionalReSharper\build\Packages`
+    - In VS => Extensions => Resharper => Options => Extension Manager => Add => 
+        Name: Exceptional Local
+        Path: `path\to\ExceptionalReSharper\build\Packages` (Recommended to clone the Repo on the local volume "C:")
+    - In VS => Extensions => Resharper => Extension Manager => "Find the extension & Install it"
 
-1. Change directory to the build directory `cd path\to\ExceptionalReSharper\build`
-2. Run `build.ps1`
-5. Now you should find a new package in `path\to\ExceptionalReSharper\build\Packages`
-6. Copy the *.nupkg file to your local repository
+2. New Build
+    - Change directory to the build directory `cd path\to\ExceptionalReSharper\build`
+    - Run `build.ps1`
+    - Now you should find a new package in `path\to\ExceptionalReSharper\build\Packages`
+    - Copy the *.nupkg file to your local repository
+    - In VS => Extensions => Resharper => Options => Extension Manager => Add => 
+        Name: Exceptional Local
+        Path: `path\to\ExceptionalReSharper\build\Packages` (Recommended to clone the Repo on the local volume "C:")
+    - In VS => Extensions => Resharper => Extension Manager => "Find the extension & Install it"   
 
 ## Development Build
 
