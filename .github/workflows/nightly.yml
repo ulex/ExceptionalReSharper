@@ -79,6 +79,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish
-        if: steps.precondition.outputs.has_changes == 'true' && success()
-        run: nuget push ${{ env.NUPKG_FILE }} ${{ secrets.JETBRAINS_TOKEN }} -source https://plugins.jetbrains.com
+#      Publish is disabled
+#      - name: Publish
+#       if: steps.precondition.outputs.has_changes == 'true' && success()
+#        run: nuget push ${{ env.NUPKG_FILE }} ${{ secrets.JETBRAINS_TOKEN }} -source https://plugins.jetbrains.com
