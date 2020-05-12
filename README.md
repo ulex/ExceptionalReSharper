@@ -25,6 +25,10 @@ Check out the extension in the ReSharper plugin gallery (targets the latest R# v
  
 - [Exceptional for ReSharper](https://resharper-plugins.jetbrains.com/packages/ExceptionalDevs.Exceptional/)
 
+Check out old versions: 
+
+- [Exceptional for ReSharper - All versions](https://plugins.jetbrains.com/plugin/11674-exceptional-for-resharper/versions)
+
 ## Features
 
 ### Thrown exception not documented or caught
