@@ -17,20 +17,13 @@ Requires ReSharper v8.2, v9, v10 or later
 - Open the ReSharper menu in Visual Studio and select Extension Manager... 
 - Search for Exceptional and install the extension
 
-Open the menu ReSharper / Options... / Exceptional to configure the extension. 
+Open the menu ReSharper / Options... / Exceptional to configure the extension.
+
+For locally installation: [Installation](Installation.md)
 
 Check out the extension in the ReSharper plugin gallery (targets the latest R# version): 
  
 - [Exceptional for ReSharper](https://resharper-plugins.jetbrains.com/packages/ExceptionalDevs.Exceptional/)
-
-Old versions: 
-
-- [Exceptional for ReSharper 8 in the plugin gallery](https://resharper-plugins.jetbrains.com/packages/Exceptional)
-- [Exceptional for ReSharper 9 in the plugin gallery](https://resharper-plugins.jetbrains.com/packages/Exceptional.R9)
-- [Exceptional for ReSharper 10 in the plugin gallery](https://resharper-plugins.jetbrains.com/packages/Exceptional.R10)
-- [Exceptional for ReSharper 2016.1 in the plugin gallery](https://resharper-plugins.jetbrains.com/packages/Exceptional.2016.1)
-- [Exceptional for ReSharper 2016.2 in the plugin gallery](https://resharper-plugins.jetbrains.com/packages/Exceptional.2016.2)
-- [Exceptional for ReSharper 2016.3 in the plugin gallery](https://resharper-plugins.jetbrains.com/packages/Exceptional.2016.3)
 
 ## Features
 
