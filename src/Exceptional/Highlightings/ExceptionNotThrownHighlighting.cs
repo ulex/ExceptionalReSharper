@@ -1,37 +1,42 @@
-using System;
-using JetBrains.ReSharper.Psi.CSharp;
-using ReSharper.Exceptional;
-using ReSharper.Exceptional.Highlightings;
-using ReSharper.Exceptional.Models;
-using JetBrains.ReSharper.Feature.Services.Daemon;
-
-[assembly: RegisterConfigurableSeverity(ExceptionNotThrownHighlighting.Id, Constants.CompoundName, HighlightingGroupIds.BestPractice,
-    "Exceptional.ExceptionNotThrown",
-    "Exceptional.ExceptionNotThrown",
-    Severity.WARNING
-    )]
-
 namespace ReSharper.Exceptional.Highlightings
 {
+    using JetBrains.ReSharper.Feature.Services.Daemon;
+    using JetBrains.ReSharper.Psi.CSharp;
+
+    using Models;
+
+    [RegisterConfigurableSeverity(
+        Id,
+        Constants.CompoundName,
+        HighlightingGroupIds.BestPractice,
+        "Exceptional.ExceptionNotThrown",
+        "Exceptional.ExceptionNotThrown",
+        Severity.WARNING)]
     [ConfigurableSeverityHighlighting(Id, CSharpLanguage.Name)]
     public class ExceptionNotThrownHighlighting : ExceptionNotThrownOptionalHighlighting
     {
+        #region constants
+
         public new const string Id = "ExceptionNotThrown";
 
-        /// <summary>Initializes a new instance of the <see cref="ExceptionNotThrownHighlighting"/> class. </summary>
+        #endregion
+
+        #region constructors and destructors
+
+        /// <summary>Initializes a new instance of the <see cref="ExceptionNotThrownHighlighting" /> class. </summary>
         /// <param name="exceptionDocumentation">The exception documentation. </param>
-        internal ExceptionNotThrownHighlighting(ExceptionDocCommentModel exceptionDocumentation)
-            : base(exceptionDocumentation)
+        internal ExceptionNotThrownHighlighting(ExceptionDocCommentModel exceptionDocumentation) : base(exceptionDocumentation)
         {
         }
 
+        #endregion
+
+        #region properties
+
         /// <summary>Gets the message which is shown in the editor. </summary>
-        protected override string Message
-        {
-            get
-            {
-                return String.Format(Resources.HighlightNotThrownDocumentedExceptions, ExceptionDocumentation.ExceptionType.GetClrName().FullName);
-            }
-        }
+        protected override string Message =>
+            string.Format(Resources.HighlightNotThrownDocumentedExceptions, ExceptionDocumentation.ExceptionType.GetClrName().FullName);
+
+        #endregion
     }
 }

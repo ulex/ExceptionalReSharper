@@ -1,14 +1,20 @@
-using System;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Modules;
-using JetBrains.Util.Logging;
-
 namespace ReSharper.Exceptional.Settings
 {
-    public class ExceptionAccessorOverride
+    using System;
+
+    using JetBrains.ReSharper.Psi;
+    using JetBrains.Util.Logging;
+
+    public sealed class ExceptionAccessorOverride
     {
-        private IDeclaredType _exceptionType = null;
-        private bool _exceptionTypeLoaded = false;
+        #region member vars
+
+        private IDeclaredType _exceptionType;
+        private bool _exceptionTypeLoaded;
+
+        #endregion
+
+        #region constructors and destructors
 
         public ExceptionAccessorOverride(string fullMethodName, string exceptionType, string exceptionAccessor)
         {
@@ -17,17 +23,16 @@ namespace ReSharper.Exceptional.Settings
             ExceptionAccessor = exceptionAccessor;
         }
 
-        public string FullMethodName { get; private set; }
+        #endregion
 
-        public string ExceptionType { get; private set; }
-
-        public string ExceptionAccessor { get; private set; }
+        #region methods
 
         public IDeclaredType GetExceptionType()
         {
             if (_exceptionTypeLoaded)
+            {
                 return _exceptionType;
-
+            }
             try
             {
                 _exceptionType = TypeFactory.CreateTypeByCLRName(ExceptionType, ServiceLocator.StageProcess.PsiModule);
@@ -42,5 +47,17 @@ namespace ReSharper.Exceptional.Settings
             }
             return _exceptionType;
         }
+
+        #endregion
+
+        #region properties
+
+        public string ExceptionAccessor { get; }
+
+        public string ExceptionType { get; }
+
+        public string FullMethodName { get; }
+
+        #endregion
     }
 }

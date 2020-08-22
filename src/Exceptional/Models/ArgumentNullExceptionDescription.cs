@@ -9,34 +9,45 @@ namespace ReSharper.Exceptional.Models
     /// <summary>
     /// Generates a description to use as the documentation of ArgumentNullException.
     /// </summary>
-    internal class ArgumentNullExceptionDescription
+    internal sealed class ArgumentNullExceptionDescription
     {
+        #region member vars
+
         /// <summary>
         /// Arguments of the thrown exception.
         /// </summary>
-        private readonly ICollection<ICSharpArgument> arguments;
+        private readonly ICollection<ICSharpArgument> _arguments;
 
         /// <summary>
         /// Tree representation of the thrown statement.
         /// </summary>
-        private readonly IThrowStatement statement;
+        private readonly IThrowStatement _statement;
+
+        #endregion
+
+        #region constructors and destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ArgumentNullExceptionDescription"/> class.
+        /// Initializes a new instance of the <see cref="ArgumentNullExceptionDescription" /> class.
         /// </summary>
         /// <param name="statement">The thrown statement.</param>
         public ArgumentNullExceptionDescription(IThrowStatement statement)
         {
-            this.statement = statement;
-            arguments = GetArguments();
+            _statement = statement;
+            _arguments = GetArguments();
         }
 
+        #endregion
+
+        #region methods
+
         /// <summary>
-        /// Creates a new <see cref="ArgumentNullExceptionDescription"/> from a <see cref="ThrownExceptionModel"/>.
+        /// Creates a new <see cref="ArgumentNullExceptionDescription" /> from a <see cref="ThrownExceptionModel" />.
         /// </summary>
         /// <param name="exception">The exception model.</param>
         /// <returns>
-        /// A new <see cref="ArgumentNullExceptionDescription"/> instance or <see langword="null"/> when the exception type is not an <see cref="System.ArgumentNullException"/>
+        /// A new <see cref="ArgumentNullExceptionDescription" /> instance or <see langword="null" /> when the exception type is
+        /// not an <see cref="System.ArgumentNullException" />
         /// </returns>
         public static ArgumentNullExceptionDescription CreateFrom(ThrownExceptionModel exception)
         {
@@ -44,12 +55,11 @@ namespace ReSharper.Exceptional.Models
             {
                 return new ArgumentNullExceptionDescription(exception.ExceptionsOrigin.Node as IThrowStatement);
             }
-
             return null;
         }
 
         /// <summary>
-        /// Generates a description based on the <see cref="System.ArgumentNullException"/>.
+        /// Generates a description based on the <see cref="System.ArgumentNullException" />.
         /// </summary>
         /// <returns>
         /// A string description.
@@ -60,8 +70,7 @@ namespace ReSharper.Exceptional.Models
             {
                 return string.Empty;
             }
-
-            switch (arguments.Count)
+            switch (_arguments.Count)
             {
                 case 0:
                     return @"Thrown when the arguments are <see langword=""null""/>";
@@ -79,15 +88,35 @@ namespace ReSharper.Exceptional.Models
         }
 
         /// <summary>
+        /// Extracts the argument value from literal or nameof expressions.
+        /// </summary>
+        /// <param name="argument">The argument.</param>
+        /// <returns>
+        /// The argument value as a string.
+        /// </returns>
+        private static string ExtractArgumentValue(ICSharpArgument argument)
+        {
+            if (argument.Value is ICSharpLiteralExpression literal)
+            {
+                return literal.ConstantValue.Value?.ToString() ?? string.Empty;
+            }
+            if (argument.Value is IInvocationExpression expression && @"nameof".Equals(expression.InvocationExpressionReference.GetName()))
+            {
+                return expression.ConstantValue.Value?.ToString() ?? string.Empty;
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Gets an argument by parameter name.
         /// </summary>
         /// <param name="paramName">Name of the parameter.</param>
         /// <returns>
-        /// The argument with that parameter name or <see langword="null"/>.
+        /// The argument with that parameter name or <see langword="null" />.
         /// </returns>
         private ICSharpArgument GetArgumentByName(string paramName)
         {
-            return arguments.FirstOrDefault(a => paramName.Equals(GetParameterName(a)));
+            return _arguments.FirstOrDefault(a => paramName.Equals(GetParameterName(a)));
         }
 
         /// <summary>
@@ -98,12 +127,11 @@ namespace ReSharper.Exceptional.Models
         /// </returns>
         private ICollection<ICSharpArgument> GetArguments()
         {
-            var expression = statement.Exception as IObjectCreationExpression;
+            var expression = _statement.Exception as IObjectCreationExpression;
             if (expression != null)
             {
                 return expression.ArgumentList.Arguments;
             }
-
             return new Collection<ICSharpArgument>();
         }
 
@@ -116,38 +144,8 @@ namespace ReSharper.Exceptional.Models
         /// </returns>
         private string GetArgumentText(string paramName)
         {
-            ICSharpArgument argument = GetArgumentByName(paramName);
-
-            if (argument != null)
-            {
-                return ExtractArgumentValue(argument);
-            }
-
-            return string.Empty;
-        }
-
-        /// <summary>
-        /// Extracts the argument value from literal or nameof expressions.
-        /// </summary>
-        /// <param name="argument">The argument.</param>
-        /// <returns>
-        /// The argument value as a string.
-        /// </returns>
-        private string ExtractArgumentValue(ICSharpArgument argument)
-        {
-            var literal = argument.Value as ICSharpLiteralExpression;
-            if (literal != null)
-            {
-                return literal.ConstantValue.Value?.ToString() ?? string.Empty;
-            }
-
-            var expression = argument.Value as IInvocationExpression;
-            if ((expression != null) && @"nameof".Equals(expression.InvocationExpressionReference.GetName()))
-            {
-                return expression.ConstantValue.Value?.ToString() ?? string.Empty;
-            }
-
-            return string.Empty;
+            var argument = GetArgumentByName(paramName);
+            return argument != null ? ExtractArgumentValue(argument) : string.Empty;
         }
 
         /// <summary>
@@ -157,7 +155,7 @@ namespace ReSharper.Exceptional.Models
         /// <returns>
         /// The name of the parameter.
         /// </returns>
-        private string GetParameterName(ICSharpArgument argument)
+        private static string GetParameterName(ICSharpArgument argument)
         {
             return argument.MatchingParameter?.Element.ShortName ?? string.Empty;
         }
@@ -166,7 +164,7 @@ namespace ReSharper.Exceptional.Models
         /// Determines whether has parameter and message arguments.
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if exception has parameter and message arguments; otherwise, <c>false</c>.
+        /// <c>true</c> if exception has parameter and message arguments; otherwise, <c>false</c>.
         /// </returns>
         private bool HasParamAndMessageArguments()
         {
@@ -178,12 +176,14 @@ namespace ReSharper.Exceptional.Models
         /// </summary>
         /// <param name="clrName">CLR name.</param>
         /// <returns>
-        ///   <c>true</c> if exception is of that type; otherwise, <c>false</c>.
+        /// <c>true</c> if exception is of that type; otherwise, <c>false</c>.
         /// </returns>
         private bool IsOfType(string clrName)
         {
-            var expression = statement.Exception as IObjectCreationExpression;
-            return expression.TypeName.QualifiedName.Equals(clrName);
+            var expression = _statement.Exception as IObjectCreationExpression;
+            return expression?.TypeName?.QualifiedName.Equals(clrName) == true;
         }
+
+        #endregion
     }
 }

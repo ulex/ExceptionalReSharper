@@ -1,19 +1,21 @@
-﻿using System;
-using System.IO;
-
-namespace Exceptional.Playground
+﻿namespace Exceptional.Playground
 {
+    using System;
+    using System.IO;
+
     public class Demonstration
     {
+        #region methods
+
         public void Test01()
         {
             // There is no documentation for the exception. 
             throw new InvalidOperationException("Message"); // BAD
         }
-        
+
         public void Test02()
         {
-            var number = Decimal.Parse("3.4");
+            var number = decimal.Parse("3.4");
             var file = File.Open("test", FileMode.Open);
         }
 
@@ -25,7 +27,9 @@ namespace Exceptional.Playground
 
         public void Test04()
         {
-            try { }
+            try
+            {
+            }
             catch (Exception) // BAD
             {
                 Console.WriteLine("CATCH");
@@ -35,11 +39,15 @@ namespace Exceptional.Playground
         /// <exception cref="InvalidOperationException">Condition. </exception>
         public void Test05()
         {
-            try { }
+            try
+            {
+            }
             catch (OperationCanceledException exception) // OK
             {
                 throw new InvalidOperationException("Message"); // BAD
             }
         }
+
+        #endregion
     }
 }

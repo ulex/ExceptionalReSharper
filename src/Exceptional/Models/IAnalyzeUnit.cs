@@ -1,19 +1,28 @@
-using JetBrains.ReSharper.Psi.Modules;
-using JetBrains.ReSharper.Psi.Tree;
-using ReSharper.Exceptional.Analyzers;
-
 namespace ReSharper.Exceptional.Models
 {
+    using Analyzers;
+
+    using JetBrains.ReSharper.Psi.Modules;
+    using JetBrains.ReSharper.Psi.Tree;
+
     internal interface IAnalyzeUnit : IBlockModel
     {
-        ITreeNode Node { get; }
+        #region methods
+
+        void Accept(AnalyzerBase analyzer);
 
         IPsiModule GetPsiModule();
+
+        #endregion
+
+        #region properties
 
         DocCommentBlockModel DocumentationBlock { get; set; }
 
         bool IsInspectionRequired { get; }
 
-        void Accept(AnalyzerBase analyzer);
+        ITreeNode Node { get; }
+
+        #endregion
     }
 }

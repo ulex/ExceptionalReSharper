@@ -1,17 +1,25 @@
-﻿using JetBrains.ReSharper.Psi;
-
-namespace ReSharper.Exceptional.Settings
+﻿namespace ReSharper.Exceptional.Settings
 {
-    public class OptionalExceptionConfiguration
+    using JetBrains.ReSharper.Psi;
+
+    public sealed class OptionalExceptionConfiguration
     {
+        #region constructors and destructors
+
         public OptionalExceptionConfiguration(IDeclaredType exceptionType, OptionalExceptionReplacementType replacementType)
         {
             ExceptionType = exceptionType;
             ReplacementType = replacementType;
         }
 
-        public IDeclaredType ExceptionType { get; private set; }
+        #endregion
 
-        public OptionalExceptionReplacementType ReplacementType { get; private set; }
+        #region properties
+
+        public IDeclaredType ExceptionType { get; }
+
+        public OptionalExceptionReplacementType ReplacementType { get; }
+
+        #endregion
     }
 }

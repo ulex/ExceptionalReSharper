@@ -1,26 +1,27 @@
-using System;
-using JetBrains.Application.Progress;
-using JetBrains.ProjectModel;
-using JetBrains.TextControl;
-using ReSharper.Exceptional.Highlightings;
-using JetBrains.ReSharper.Feature.Services.QuickFixes;
-
 namespace ReSharper.Exceptional.QuickFixes
 {
+    using System;
+
+    using Highlightings;
+
+    using JetBrains.Application.Progress;
+    using JetBrains.ProjectModel;
+    using JetBrains.ReSharper.Feature.Services.QuickFixes;
+    using JetBrains.TextControl;
+
     [QuickFix]
     internal class RemoveExceptionDocumentationFix : SingleActionFix
     {
-        private ExceptionNotThrownHighlighting Error { get; set; }
+        #region constructors and destructors
 
         public RemoveExceptionDocumentationFix(ExceptionNotThrownHighlighting error)
         {
             Error = error;
         }
 
-        public override string Text
-        {
-            get { return Resources.QuickFixRemoveExceptionDocumentation; }
-        }
+        #endregion
+
+        #region methods
 
         protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
         {
@@ -28,5 +29,15 @@ namespace ReSharper.Exceptional.QuickFixes
             docCommentModel.RemoveExceptionDocumentation(Error.ExceptionDocumentation, progress);
             return null;
         }
+
+        #endregion
+
+        #region properties
+
+        public override string Text => Resources.QuickFixRemoveExceptionDocumentation;
+
+        private ExceptionNotThrownHighlighting Error { get; }
+
+        #endregion
     }
 }

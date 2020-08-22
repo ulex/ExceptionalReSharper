@@ -1,28 +1,29 @@
-using System;
-using JetBrains.ReSharper.Psi.CSharp;
-using ReSharper.Exceptional;
-using ReSharper.Exceptional.Highlightings;
-
-using JetBrains.ReSharper.Feature.Services.Daemon;
-
-[assembly: RegisterConfigurableSeverity(CatchAllClauseHighlighting.Id, Constants.CompoundName, HighlightingGroupIds.BestPractice,
-    "Exceptional.CatchAllClause",
-    "Exceptional.CatchAllClause",
-    Severity.SUGGESTION
-    )]
-
-
 namespace ReSharper.Exceptional.Highlightings
 {
+    using JetBrains.ReSharper.Feature.Services.Daemon;
+    using JetBrains.ReSharper.Psi.CSharp;
+
+    [RegisterConfigurableSeverity(
+        Id,
+        Constants.CompoundName,
+        HighlightingGroupIds.BestPractice,
+        "Exceptional.CatchAllClause",
+        "Exceptional.CatchAllClause",
+        Severity.SUGGESTION)]
     [ConfigurableSeverityHighlighting(Id, CSharpLanguage.Name)]
     public class CatchAllClauseHighlighting : HighlightingBase
     {
+        #region constants
+
         public const string Id = "CatchAllClause";
 
+        #endregion
+
+        #region properties
+
         /// <summary>Gets the message which is shown in the editor. </summary>
-        protected override string Message
-        {
-            get { return String.Format(Resources.HighlightCatchAllClauses); }
-        }
+        protected override string Message => string.Format(Resources.HighlightCatchAllClauses);
+
+        #endregion
     }
 }

@@ -1,17 +1,21 @@
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-
 namespace ReSharper.Exceptional.Models
 {
-    internal class CatchVariableModel : TreeElementModelBase<ICatchVariableDeclaration>
+    using JetBrains.ReSharper.Psi.CSharp.Tree;
+
+    internal sealed class CatchVariableModel : TreeElementModelBase<ICatchVariableDeclaration>
     {
-        public CatchVariableModel(IAnalyzeUnit analyzeUnit, ICatchVariableDeclaration catchVariableDeclaration)
-            : base(analyzeUnit, catchVariableDeclaration)
+        #region constructors and destructors
+
+        public CatchVariableModel(IAnalyzeUnit analyzeUnit, ICatchVariableDeclaration catchVariableDeclaration) : base(analyzeUnit, catchVariableDeclaration)
         {
         }
 
-        public ICSharpIdentifier VariableName
-        {
-            get { return Node.NameIdentifier; }
-        }
+        #endregion
+
+        #region properties
+
+        public ICSharpIdentifier VariableName => Node.NameIdentifier;
+
+        #endregion
     }
 }

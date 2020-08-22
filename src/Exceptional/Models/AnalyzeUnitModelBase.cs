@@ -1,24 +1,37 @@
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Modules;
-using JetBrains.ReSharper.Psi.Tree;
-using ReSharper.Exceptional.Analyzers;
-using ReSharper.Exceptional.Settings;
-
 namespace ReSharper.Exceptional.Models
 {
-    internal abstract class AnalyzeUnitModelBase<T> : BlockModelBase<T>, IAnalyzeUnit where T : ITreeNode
+    using Analyzers;
+
+    using JetBrains.ReSharper.Psi;
+    using JetBrains.ReSharper.Psi.Modules;
+    using JetBrains.ReSharper.Psi.Tree;
+
+    internal abstract class AnalyzeUnitModelBase<T> : BlockModelBase<T>,
+        IAnalyzeUnit
+        where T : ITreeNode
     {
-        protected AnalyzeUnitModelBase(IAnalyzeUnit analyzeUnit, T node)
-            : base(analyzeUnit, node)
+        #region constructors and destructors
+
+        protected AnalyzeUnitModelBase(IAnalyzeUnit analyzeUnit, T node) : base(analyzeUnit, node)
         {
             DocumentationBlock = new DocCommentBlockModel(this, null);
         }
 
+        #endregion
+
+        #region explicit interfaces
+
+        public override void Accept(AnalyzerBase analyzer)
+        {
+            DocumentationBlock?.Accept(analyzer);
+            base.Accept(analyzer);
+        }
+
         public DocCommentBlockModel DocumentationBlock { get; set; }
 
-        ITreeNode IAnalyzeUnit.Node
+        public IPsiModule GetPsiModule()
         {
-            get { return Node; }
+            return Node.GetPsiModule();
         }
 
         public bool IsInspectionRequired
@@ -27,32 +40,22 @@ namespace ReSharper.Exceptional.Models
             {
                 var accessRightsOwner = Node as IAccessRightsOwner;
                 if (accessRightsOwner == null)
+                {
                     return false;
-
+                }
                 var inspectPublicMethods = ServiceLocator.Settings.InspectPublicMethods;
                 var inspectInternalMethods = ServiceLocator.Settings.InspectInternalMethods;
                 var inspectProtectedMethods = ServiceLocator.Settings.InspectProtectedMethods;
                 var inspectPrivateMethods = ServiceLocator.Settings.InspectPrivateMethods;
-
                 var rights = accessRightsOwner.GetAccessRights();
-                return (rights == AccessRights.PUBLIC && inspectPublicMethods) ||
-                       (rights == AccessRights.INTERNAL && inspectInternalMethods) ||
-                       (rights == AccessRights.PROTECTED && inspectProtectedMethods) ||
-                       (rights == AccessRights.PRIVATE && inspectPrivateMethods);
+                return rights == AccessRights.PUBLIC && inspectPublicMethods || rights == AccessRights.INTERNAL && inspectInternalMethods
+                                                                             || rights == AccessRights.PROTECTED && inspectProtectedMethods
+                                                                             || rights == AccessRights.PRIVATE && inspectPrivateMethods;
             }
         }
 
-        public override void Accept(AnalyzerBase analyzer)
-        {
-            if (DocumentationBlock != null)
-                DocumentationBlock.Accept(analyzer);
+        ITreeNode IAnalyzeUnit.Node => Node;
 
-            base.Accept(analyzer);
-        }
-
-        public IPsiModule GetPsiModule()
-        {
-            return Node.GetPsiModule();
-        }
+        #endregion
     }
 }

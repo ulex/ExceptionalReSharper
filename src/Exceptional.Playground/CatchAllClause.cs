@@ -1,10 +1,12 @@
-﻿using System;
-using System.Security;
-
-namespace Exceptional.Playground
+﻿namespace Exceptional.Playground
 {
+    using System;
+    using System.Security;
+
     public class CatchAllClause
     {
+        #region methods
+
         public void Test01()
         {
             try
@@ -23,8 +25,9 @@ namespace Exceptional.Playground
             {
                 throw new SecurityException();
             }
-            catch (Exception exception) // Two warnings: Same as above and one from ReSharper
+            catch (Exception) // Two warnings: Same as above and one from ReSharper
             {
+                // ignored
             }
         }
 
@@ -36,6 +39,7 @@ namespace Exceptional.Playground
             }
             catch // Two warnings: Same as above and one from ReSharper
             {
+                // ignored
             }
         }
 
@@ -64,7 +68,6 @@ namespace Exceptional.Playground
             }
         }
 
-
         /// <exception cref="Exception"></exception>
         public void Test06()
         {
@@ -78,5 +81,7 @@ namespace Exceptional.Playground
                 throw; // no warnings
             }
         }
+
+        #endregion
     }
 }

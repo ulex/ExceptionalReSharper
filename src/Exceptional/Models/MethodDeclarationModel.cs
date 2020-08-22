@@ -1,20 +1,23 @@
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using ReSharper.Exceptional.Settings;
-
 namespace ReSharper.Exceptional.Models
 {
-    /// <summary>Stores data about processed <see cref="IMethodDeclaration"/></summary>
-    internal class MethodDeclarationModel : AnalyzeUnitModelBase<IMethodDeclaration>
+    using JetBrains.ReSharper.Psi.CSharp.Tree;
+
+    /// <summary>Stores data about processed <see cref="IMethodDeclaration" /></summary>
+    internal sealed class MethodDeclarationModel : AnalyzeUnitModelBase<IMethodDeclaration>
     {
-        public MethodDeclarationModel(IMethodDeclaration methodDeclaration)
-            : base(null, methodDeclaration)
+        #region constructors and destructors
+
+        public MethodDeclarationModel(IMethodDeclaration methodDeclaration) : base(null, methodDeclaration)
         {
         }
 
+        #endregion
+
+        #region properties
+
         /// <summary>Gets the content block of the object. </summary>
-        public override IBlock Content
-        {
-            get { return Node.Body; }
-        }
+        public override IBlock Content => Node.Body;
+
+        #endregion
     }
 }

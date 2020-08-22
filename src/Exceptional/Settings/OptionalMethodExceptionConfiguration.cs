@@ -1,15 +1,22 @@
-using System;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Modules;
-using JetBrains.Util.Logging;
-using ReSharper.Exceptional.Models;
-
 namespace ReSharper.Exceptional.Settings
 {
-    public class OptionalMethodExceptionConfiguration
+    using System;
+
+    using JetBrains.ReSharper.Psi;
+    using JetBrains.Util.Logging;
+
+    using Models;
+
+    public sealed class OptionalMethodExceptionConfiguration
     {
-        private IDeclaredType _exceptionType = null;
-        private bool _exceptionTypeLoaded = false; 
+        #region member vars
+
+        private IDeclaredType _exceptionType;
+        private bool _exceptionTypeLoaded;
+
+        #endregion
+
+        #region constructors and destructors
 
         public OptionalMethodExceptionConfiguration(string fullMethodName, string exceptionType)
         {
@@ -17,24 +24,22 @@ namespace ReSharper.Exceptional.Settings
             ExceptionType = exceptionType;
         }
 
-        internal string FullMethodName { get; private set; }
+        #endregion
 
-        internal string ExceptionType { get; private set; }
+        #region methods
 
-        internal bool IsSupertypeOf(ThrownExceptionModel thrownException)
+        internal bool IsSuperTypeOf(ThrownExceptionModel thrownException)
         {
             var exceptionType = GetExceptionType();
-            if (exceptionType == null)
-                return false;
-
-            return thrownException.ExceptionType.IsSubtypeOf(exceptionType);
+            return exceptionType != null && thrownException.ExceptionType.IsSubtypeOf(exceptionType);
         }
 
         private IDeclaredType GetExceptionType()
         {
             if (_exceptionTypeLoaded)
+            {
                 return _exceptionType;
-
+            }
             try
             {
                 _exceptionType = TypeFactory.CreateTypeByCLRName(ExceptionType, ServiceLocator.StageProcess.PsiModule);
@@ -45,9 +50,19 @@ namespace ReSharper.Exceptional.Settings
             }
             finally
             {
-                _exceptionTypeLoaded = true; 
+                _exceptionTypeLoaded = true;
             }
             return _exceptionType;
         }
+
+        #endregion
+
+        #region properties
+
+        internal string ExceptionType { get; }
+
+        internal string FullMethodName { get; }
+
+        #endregion
     }
 }

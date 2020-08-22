@@ -1,41 +1,48 @@
-using System;
-using JetBrains.ReSharper.Psi.CSharp;
-using ReSharper.Exceptional;
-using ReSharper.Exceptional.Highlightings;
-using ReSharper.Exceptional.Models;
-using JetBrains.ReSharper.Feature.Services.Daemon;
-
-[assembly: RegisterConfigurableSeverity(ExceptionNotThrownOptionalHighlighting.Id, Constants.CompoundName, HighlightingGroupIds.BestPractice,
-    "Exceptional.ExceptionNotThrownOptional",
-    "Exceptional.ExceptionNotThrownOptional",
-    Severity.HINT
-    )]
-
 namespace ReSharper.Exceptional.Highlightings
 {
+    using JetBrains.ReSharper.Feature.Services.Daemon;
+    using JetBrains.ReSharper.Psi.CSharp;
+
+    using Models;
+
+    [RegisterConfigurableSeverity(
+        Id,
+        Constants.CompoundName,
+        HighlightingGroupIds.BestPractice,
+        "Exceptional.ExceptionNotThrownOptional",
+        "Exceptional.ExceptionNotThrownOptional",
+        Severity.HINT)]
     [ConfigurableSeverityHighlighting(Id, CSharpLanguage.Name)]
     public class ExceptionNotThrownOptionalHighlighting : HighlightingBase
     {
+        #region constants
+
         public const string Id = "ExceptionNotThrownOptional";
 
-        /// <summary>Initializes a new instance of the <see cref="ExceptionNotThrownOptionalHighlighting"/> class. </summary>
+        #endregion
+
+        #region constructors and destructors
+
+        /// <summary>Initializes a new instance of the <see cref="ExceptionNotThrownOptionalHighlighting" /> class. </summary>
         /// <param name="exceptionDocumentation">The exception documentation. </param>
         internal ExceptionNotThrownOptionalHighlighting(ExceptionDocCommentModel exceptionDocumentation)
         {
             ExceptionDocumentation = exceptionDocumentation;
         }
 
-        /// <summary>Gets the exception documentation. </summary>
-        internal ExceptionDocCommentModel ExceptionDocumentation { get; private set; }
+        #endregion
+
+        #region properties
 
         /// <summary>Gets the message which is shown in the editor. </summary>
-        protected override string Message
-        {
-            get
-            {
-                return Constants.OptionalPrefix + String.Format(
-                    Resources.HighlightNotThrownDocumentedExceptions, ExceptionDocumentation.ExceptionType.GetClrName().FullName);
-            }
-        }
+        protected override string Message =>
+            Constants.OptionalPrefix + string.Format(
+                Resources.HighlightNotThrownDocumentedExceptions,
+                ExceptionDocumentation.ExceptionType.GetClrName().FullName);
+
+        /// <summary>Gets the exception documentation. </summary>
+        internal ExceptionDocCommentModel ExceptionDocumentation { get; }
+
+        #endregion
     }
 }

@@ -1,38 +1,51 @@
-using System;
-using JetBrains.Application.Progress;
-using JetBrains.ProjectModel;
-using JetBrains.TextControl;
-using ReSharper.Exceptional.Highlightings;
-using JetBrains.ReSharper.Feature.Services.QuickFixes;
-
 namespace ReSharper.Exceptional.QuickFixes
 {
+    using System;
+
+    using Highlightings;
+
+    using JetBrains.Application.Progress;
+    using JetBrains.ProjectModel;
+    using JetBrains.ReSharper.Feature.Services.QuickFixes;
+    using JetBrains.TextControl;
+
     [QuickFix]
     internal class CatchExceptionFix : SingleActionFix
     {
-        private ExceptionNotDocumentedOptionalHighlighting Error { get; set; }
+        #region constructors and destructors
 
         public CatchExceptionFix(ExceptionNotDocumentedOptionalHighlighting error)
         {
             Error = error;
         }
 
-        public override string Text
-        {
-            get { return String.Format(Resources.QuickFixCatchException, Error.ThrownException.ExceptionType.GetClrName().FullName); }
-        }
+        #endregion
+
+        #region methods
 
         protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
         {
             var exceptionsOriginModel = Error.ThrownException.ExceptionsOrigin;
-
             var nearestTryBlock = exceptionsOriginModel.ContainingBlock.FindNearestTryStatement();
             if (nearestTryBlock == null)
+            {
                 exceptionsOriginModel.SurroundWithTryBlock(Error.ThrownException.ExceptionType);
+            }
             else
+            {
                 nearestTryBlock.AddCatchClause(Error.ThrownException.ExceptionType);
-
+            }
             return null;
         }
+
+        #endregion
+
+        #region properties
+
+        public override string Text => string.Format(Resources.QuickFixCatchException, Error.ThrownException.ExceptionType.GetClrName().FullName);
+
+        private ExceptionNotDocumentedOptionalHighlighting Error { get; }
+
+        #endregion
     }
 }

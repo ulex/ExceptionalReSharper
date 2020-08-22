@@ -1,19 +1,23 @@
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-
 namespace ReSharper.Exceptional.Models
 {
-    internal class AccessorDeclarationModel : BlockModelBase<IAccessorDeclaration>
+    using JetBrains.ReSharper.Psi.CSharp.Tree;
+
+    internal sealed class AccessorDeclarationModel : BlockModelBase<IAccessorDeclaration>
     {
-        public AccessorDeclarationModel(IAnalyzeUnit analyzeUnit, IAccessorDeclaration node, IBlockModel parentBlock)
-            : base(analyzeUnit, node)
+        #region constructors and destructors
+
+        public AccessorDeclarationModel(IAnalyzeUnit analyzeUnit, IAccessorDeclaration node, IBlockModel parentBlock) : base(analyzeUnit, node)
         {
             ParentBlock = parentBlock;
         }
 
+        #endregion
+
+        #region properties
+
         /// <summary>Gets the content block of the object. </summary>
-        public override IBlock Content
-        {
-            get { return Node.Body; }
-        }
+        public override IBlock Content => Node.Body;
+
+        #endregion
     }
 }

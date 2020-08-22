@@ -1,24 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.CSharp.Stages;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Tree;
-using ReSharper.Exceptional.Contexts;
-using ReSharper.Exceptional.Models;
-using ReSharper.Exceptional.Settings;
-
-using JetBrains.ReSharper.Feature.Services.Daemon;
-
-namespace ReSharper.Exceptional
+﻿namespace ReSharper.Exceptional
 {
+    using System.Collections.Generic;
+
+    using Contexts;
+
+    using JetBrains.ReSharper.Daemon.CSharp.Stages;
+    using JetBrains.ReSharper.Psi;
+    using JetBrains.ReSharper.Psi.CSharp.Tree;
+    using JetBrains.ReSharper.Psi.Tree;
+
+    using Models;
+
     public class ExceptionalRecursiveElementProcessor : IRecursiveElementProcessor
     {
+        #region member vars
+
         private readonly CSharpDaemonStageProcessBase _daemonProcess;
         private readonly List<IDocCommentBlock> _eventComments = new List<IDocCommentBlock>();
 
         private IProcessContext _currentContext;
+
+        #endregion
+
+        #region constructors and destructors
 
         public ExceptionalRecursiveElementProcessor(CSharpDaemonStageProcessBase daemonProcess)
         {
@@ -26,21 +30,66 @@ namespace ReSharper.Exceptional
             _currentContext = new NullProcessContext();
         }
 
+        #endregion
+
+        #region explicit interfaces
+
         public bool InteriorShouldBeProcessed(ITreeNode element)
         {
             return true;
         }
 
+        public void ProcessAfterInterior(ITreeNode element)
+        {
+            if (element is IMethodDeclaration)
+            {
+                _currentContext.RunAnalyzers();
+            }
+            else if (element is IEventDeclaration)
+            {
+                _currentContext.RunAnalyzers();
+            }
+            else if (element is IAccessorOwnerDeclaration)
+            {
+                _currentContext.RunAnalyzers();
+            }
+            else if (element is IAccessorDeclaration)
+            {
+                //_currentContext.RunAnalyzers(_daemonProcess, _settings); // Already analyzed by accessor owner
+                _currentContext.LeaveAccessor();
+            }
+            else if (element is IConstructorDeclaration)
+            {
+                _currentContext.RunAnalyzers();
+            }
+            else if (element is ITryStatement)
+            {
+                _currentContext.LeaveTryBlock();
+            }
+            else if (element is ICatchClause)
+            {
+                _currentContext.LeaveCatchClause();
+            }
+        }
+
         public void ProcessBeforeInterior(ITreeNode element)
         {
             if (element is IThrowStatement)
+            {
                 _currentContext.Process(element as IThrowStatement);
+            }
             else if (element is ICatchVariableDeclaration)
+            {
                 _currentContext.Process(element as ICatchVariableDeclaration);
+            }
             else if (element is IReferenceExpression)
+            {
                 _currentContext.Process(element as IReferenceExpression);
+            }
             else if (element is IObjectCreationExpression)
+            {
                 _currentContext.Process(element as IObjectCreationExpression);
+            }
             if (element is IMethodDeclaration)
             {
                 var methodDeclaration = element as IMethodDeclaration;
@@ -58,9 +107,10 @@ namespace ReSharper.Exceptional
                 var eventDeclaration = element as IEventDeclaration;
                 _currentContext = new EventProcessContext();
                 _currentContext.StartProcess(new EventDeclarationModel(eventDeclaration));
-
                 foreach (var doc in _eventComments)
+                {
                     _currentContext.Process(doc);
+                }
                 _eventComments.Clear();
             }
             else if (element is IAccessorOwnerDeclaration)
@@ -70,11 +120,15 @@ namespace ReSharper.Exceptional
                 _currentContext.StartProcess(new AccessorOwnerDeclarationModel(accessorOwnerDeclaration));
             }
             else if (element is IAccessorDeclaration)
+            {
                 _currentContext.EnterAccessor(element as IAccessorDeclaration);
+            }
             else if (element is IDocCommentBlock)
             {
                 if (_currentContext.Model == null || _currentContext.Model.Node == element.Parent)
+                {
                     _currentContext.Process(element as IDocCommentBlock);
+                }
                 else
                 {
                     _eventComments.Add((IDocCommentBlock)element);
@@ -83,39 +137,21 @@ namespace ReSharper.Exceptional
                 }
             }
             else if (element is IThrowExpression)
+            {
                 _currentContext.Process(element as IThrowExpression);
+            }
             else if (element is ITryStatement)
+            {
                 _currentContext.EnterTryBlock(element as ITryStatement);
+            }
             else if (element is ICatchClause)
+            {
                 _currentContext.EnterCatchClause(element as ICatchClause);
+            }
         }
 
-        public void ProcessAfterInterior(ITreeNode element)
-        {
-            if (element is IMethodDeclaration)
-                _currentContext.RunAnalyzers();
-            else if (element is IEventDeclaration)
-                _currentContext.RunAnalyzers();
-            else if (element is IAccessorOwnerDeclaration)
-            {
-                _currentContext.RunAnalyzers();
-            }
-            else if (element is IAccessorDeclaration)
-            {
-                //_currentContext.RunAnalyzers(_daemonProcess, _settings); // Already analyzed by accessor owner
-                _currentContext.LeaveAccessor();
-            }
-            else if (element is IConstructorDeclaration)
-                _currentContext.RunAnalyzers();
-            else if (element is ITryStatement)
-                _currentContext.LeaveTryBlock();
-            else if (element is ICatchClause)
-                _currentContext.LeaveCatchClause();
-        }
+        public bool ProcessingIsFinished => ServiceLocator.Process.InterruptFlag;
 
-        public bool ProcessingIsFinished
-        {
-            get { return ServiceLocator.Process.InterruptFlag; }
-        }
+        #endregion
     }
 }

@@ -2,9 +2,9 @@
 {
     public enum OptionalExceptionReplacementType
     {
-        None, 
-        Always, 
-        InvocationOnly, 
+        None,
+        Always,
+        InvocationOnly,
         ThrowOnly
     }
 }

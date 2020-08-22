@@ -1,28 +1,15 @@
-﻿using JetBrains.ReSharper.Daemon.CSharp.Stages;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Tree;
-using ReSharper.Exceptional.Models;
-using ReSharper.Exceptional.Settings;
-
-namespace ReSharper.Exceptional.Contexts
+﻿namespace ReSharper.Exceptional.Contexts
 {
+    using JetBrains.ReSharper.Psi.CSharp.Tree;
+    using JetBrains.ReSharper.Psi.Tree;
+
+    using Models;
+
     internal class NullProcessContext : IProcessContext
     {
-        public IAnalyzeUnit Model { get { return null; } }
+        #region explicit interfaces
 
-        public void StartProcess(IAnalyzeUnit analyzeUnit)
-        {
-        }
-
-        public void RunAnalyzers()
-        {
-        }
-
-        public void EnterTryBlock(ITryStatement tryStatement)
-        {
-        }
-
-        public void LeaveTryBlock()
+        public void EnterAccessor(IAccessorDeclaration accessorDeclarationNode)
         {
         }
 
@@ -30,9 +17,23 @@ namespace ReSharper.Exceptional.Contexts
         {
         }
 
+        public void EnterTryBlock(ITryStatement tryStatement)
+        {
+        }
+
+        public void LeaveAccessor()
+        {
+        }
+
         public void LeaveCatchClause()
         {
         }
+
+        public void LeaveTryBlock()
+        {
+        }
+
+        public IAnalyzeUnit Model => null;
 
         public void Process(IThrowStatement throwStatement)
         {
@@ -48,25 +49,24 @@ namespace ReSharper.Exceptional.Contexts
 
         public void Process(IObjectCreationExpression objectCreationExpression)
         {
-
         }
 
         public void Process(IDocCommentBlock docCommentBlockNode)
         {
-
         }
 
         public void Process(IThrowExpression throwExpression)
         {
-            
         }
 
-        public void EnterAccessor(IAccessorDeclaration accessorDeclarationNode)
+        public void RunAnalyzers()
         {
         }
 
-        public void LeaveAccessor()
+        public void StartProcess(IAnalyzeUnit analyzeUnit)
         {
         }
+
+        #endregion
     }
 }

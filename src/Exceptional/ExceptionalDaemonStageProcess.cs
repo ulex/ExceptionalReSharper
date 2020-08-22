@@ -1,28 +1,40 @@
-using JetBrains.DocumentModel;
-
-using System;
-using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon.CSharp.Stages;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-
-using JetBrains.ReSharper.Feature.Services.Daemon;
-
 namespace ReSharper.Exceptional
 {
+    using System;
+
+    using JetBrains.Application.Settings;
+    using JetBrains.DocumentModel;
+    using JetBrains.ReSharper.Daemon.CSharp.Stages;
+    using JetBrains.ReSharper.Feature.Services.Daemon;
+    using JetBrains.ReSharper.Psi;
+    using JetBrains.ReSharper.Psi.CSharp;
+    using JetBrains.ReSharper.Psi.CSharp.Tree;
+
     /// <summary>This process is executed by the ReSharper's Daemon</summary>
-    /// <remarks>The instance of this class is constructed each time the daemon needs to re highlight a given file. 
-    /// This object is short-lived. It executes the target highlighting logic.</remarks>
+    /// <remarks>
+    /// The instance of this class is constructed each time the daemon needs to re highlight a given file.
+    /// This object is short-lived. It executes the target highlighting logic.
+    /// </remarks>
     public class ExceptionalDaemonStageProcess : CSharpDaemonStageProcessBase
     {
+        #region member vars
+
         private readonly IHighlightingConsumer _consumer;
 
-        public ExceptionalDaemonStageProcess(ICSharpFile file, IPsiSourceFile psiSourceFile, IContextBoundSettingsStore settings)
-            : base(ServiceLocator.Process, file)
+        #endregion
+
+        #region constructors and destructors
+
+        public ExceptionalDaemonStageProcess(ICSharpFile file, IPsiSourceFile psiSourceFile, IContextBoundSettingsStore settings) : base(
+            ServiceLocator.Process,
+            file)
         {
             _consumer = new FilteringHighlightingConsumer(psiSourceFile, file, settings);
         }
+
+        #endregion
+
+        #region methods
 
         public void AddHighlighting(IHighlighting highlighting, DocumentRange range)
         {
@@ -34,15 +46,18 @@ namespace ReSharper.Exceptional
         {
             var file = ServiceLocator.Process.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) as ICSharpFile;
             if (file == null)
+            {
                 return;
-
+            }
             var elementProcessor = new ExceptionalRecursiveElementProcessor(this);
             file.ProcessDescendants(elementProcessor);
-
             if (ServiceLocator.Process.InterruptFlag)
+            {
                 throw new OperationCanceledException();
-
+            }
             commiter(new DaemonStageResult(_consumer.Highlightings));
         }
+
+        #endregion
     }
 }

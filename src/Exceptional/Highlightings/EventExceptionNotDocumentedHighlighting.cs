@@ -1,35 +1,41 @@
-using JetBrains.ReSharper.Psi.CSharp;
-using ReSharper.Exceptional;
-using ReSharper.Exceptional.Highlightings;
-using ReSharper.Exceptional.Models;
-
-using JetBrains.ReSharper.Feature.Services.Daemon;
-
-[assembly: RegisterConfigurableSeverity(EventExceptionNotDocumentedHighlighting.Id, Constants.CompoundName, HighlightingGroupIds.BestPractice,
-    "Exceptional.EventExceptionNotDocumented",
-    "Exceptional.EventExceptionNotDocumented",
-    Severity.SUGGESTION
-    )]
-
-
 namespace ReSharper.Exceptional.Highlightings
 {
+    using JetBrains.ReSharper.Feature.Services.Daemon;
+    using JetBrains.ReSharper.Psi.CSharp;
+
+    using Models;
+
+    [RegisterConfigurableSeverity(
+        Id,
+        Constants.CompoundName,
+        HighlightingGroupIds.BestPractice,
+        "Exceptional.EventExceptionNotDocumented",
+        "Exceptional.EventExceptionNotDocumented",
+        Severity.SUGGESTION)]
     [ConfigurableSeverityHighlighting(Id, CSharpLanguage.Name)]
     public class EventExceptionNotDocumentedHighlighting : ExceptionNotDocumentedHighlighting
     {
+        #region constants
+
         public new const string Id = "EventExceptionNotDocumented";
 
-        /// <summary>Initializes a new instance of the <see cref="EventExceptionNotDocumentedHighlighting"/> class. </summary>
+        #endregion
+
+        #region constructors and destructors
+
+        /// <summary>Initializes a new instance of the <see cref="EventExceptionNotDocumentedHighlighting" /> class. </summary>
         /// <param name="thrownException">The thrown exception. </param>
-        internal EventExceptionNotDocumentedHighlighting(ThrownExceptionModel thrownException)
-            : base(thrownException)
+        internal EventExceptionNotDocumentedHighlighting(ThrownExceptionModel thrownException) : base(thrownException)
         {
         }
 
+        #endregion
+
+        #region properties
+
         /// <summary>Gets the message which is shown in the editor. </summary>
-        protected override string Message
-        {
-            get { return Resources.HighlightEventNotDocumentedExceptions; }
-        }
+        protected override string Message => Resources.HighlightEventNotDocumentedExceptions;
+
+        #endregion
     }
 }

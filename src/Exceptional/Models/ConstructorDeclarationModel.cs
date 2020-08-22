@@ -1,49 +1,48 @@
-using System.Linq;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Util;
-using ReSharper.Exceptional.Models.ExceptionsOrigins;
-using ReSharper.Exceptional.Settings;
-
 namespace ReSharper.Exceptional.Models
 {
-    /// <summary>Stores data about processed <see cref="IConstructorDeclaration"/></summary>
-    internal class ConstructorDeclarationModel : AnalyzeUnitModelBase<IConstructorDeclaration>
+    using System.Linq;
+
+    using ExceptionsOrigins;
+
+    using JetBrains.ReSharper.Psi.CSharp.Tree;
+    using JetBrains.ReSharper.Psi.Util;
+
+    /// <summary>Stores data about processed <see cref="IConstructorDeclaration" /></summary>
+    internal sealed class ConstructorDeclarationModel : AnalyzeUnitModelBase<IConstructorDeclaration>
     {
-        /// <summary>Initializes a new instance of the <see cref="ConstructorDeclarationModel"/> class. </summary>
+        #region constructors and destructors
+
+        /// <summary>Initializes a new instance of the <see cref="ConstructorDeclarationModel" /> class. </summary>
         /// <param name="constructorDeclaration">The constructor declaration. </param>
-        public ConstructorDeclarationModel(IConstructorDeclaration constructorDeclaration)
-            : base(null, constructorDeclaration)
+        public ConstructorDeclarationModel(IConstructorDeclaration constructorDeclaration) : base(null, constructorDeclaration)
         {
             if (constructorDeclaration.Initializer != null)
+            {
                 ThrownExceptions.Add(new ConstructorInitializerModel(this, constructorDeclaration.Initializer, this));
+            }
             else
             {
-                if (constructorDeclaration.DeclaredElement != null && constructorDeclaration.DeclaredElement.IsDefault)
+                if (constructorDeclaration.DeclaredElement?.IsDefault == true)
                 {
                     var containingType = constructorDeclaration.DeclaredElement.GetContainingType();
-                    if (containingType != null)
+                    var baseClass = containingType?.GetSuperTypes().FirstOrDefault(t => !t.IsInterfaceType());
+                    var baseClassTypeElement = baseClass?.GetTypeElement();
+                    var defaultBaseConstructor = baseClassTypeElement?.Constructors.First(c => c.IsDefault);
+                    if (defaultBaseConstructor != null)
                     {
-                        var baseClass = containingType.GetSuperTypes().FirstOrDefault(t => !t.IsInterfaceType());
-                        if (baseClass != null)
-                        {
-                            var baseClassTypeElement = baseClass.GetTypeElement();
-                            if (baseClassTypeElement != null)
-                            {
-                                IConstructor defaultBaseConstructor = baseClassTypeElement.Constructors.First(c => c.IsDefault);
-                                if (defaultBaseConstructor != null)
-                                    ThrownExceptions.Add(new ConstructorInitializerModel(this, defaultBaseConstructor, this));
-                            }
-                        }
+                        ThrownExceptions.Add(new ConstructorInitializerModel(this, defaultBaseConstructor, this));
                     }
                 }
             }
         }
 
+        #endregion
+
+        #region properties
+
         /// <summary>Gets the content block of the object. </summary>
-        public override IBlock Content
-        {
-            get { return Node.Body; }
-        }
+        public override IBlock Content => Node.Body;
+
+        #endregion
     }
 }

@@ -1,38 +1,51 @@
-using System.Collections.Generic;
-using System.Linq;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using ReSharper.Exceptional.Analyzers;
-using ReSharper.Exceptional.Settings;
-
 namespace ReSharper.Exceptional.Models
 {
-    internal class AccessorOwnerDeclarationModel : AnalyzeUnitModelBase<IAccessorOwnerDeclaration>
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Analyzers;
+
+    using JetBrains.ReSharper.Psi.CSharp.Tree;
+
+    internal sealed class AccessorOwnerDeclarationModel : AnalyzeUnitModelBase<IAccessorOwnerDeclaration>
     {
-        public AccessorOwnerDeclarationModel(IAccessorOwnerDeclaration node)
-            : base(null, node)
+        #region constructors and destructors
+
+        public AccessorOwnerDeclarationModel(IAccessorOwnerDeclaration node) : base(null, node)
         {
             Accessors = new List<AccessorDeclarationModel>();
         }
 
-        public List<AccessorDeclarationModel> Accessors { get; private set; }
+        #endregion
+
+        #region methods
 
         public override void Accept(AnalyzerBase analyzer)
         {
             foreach (var accessor in Accessors)
+            {
                 accessor.Accept(analyzer);
-
+            }
             base.Accept(analyzer);
         }
 
-        public override IEnumerable<ThrownExceptionModel> UncaughtThrownExceptions
-        {
-            get { return Accessors.SelectMany(m => m.UncaughtThrownExceptions); }
-        }
+        #endregion
+
+        #region properties
+
+        public List<AccessorDeclarationModel> Accessors { get; }
 
         /// <summary>Gets the content block of the object. </summary>
-        public override IBlock Content
+        public override IBlock Content => null;
+
+        public override IEnumerable<ThrownExceptionModel> UncaughtThrownExceptions
         {
-            get { return null; }
+            get
+            {
+                return Accessors.SelectMany(m => m.UncaughtThrownExceptions);
+            }
         }
+
+        #endregion
     }
 }
