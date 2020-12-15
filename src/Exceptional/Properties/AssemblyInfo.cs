@@ -8,12 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Reflection.AssemblyTitle("Exceptional for ReSharper")]
+[assembly: System.Reflection.AssemblyTitle("Exceptional for ReSharper by MF")]
 [assembly: System.Reflection.AssemblyDescription("Analyzes thrown and documented C# exceptions and suggests improvements.")]
 [assembly: System.Reflection.AssemblyProduct("Exceptional")]
 [assembly: System.Reflection.AssemblyCompany("ExceptionalDevs")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright © 2020 ExceptionalDevs")]
-[assembly: System.Reflection.AssemblyVersion("0.25.0.0")]
+[assembly: System.Reflection.AssemblyVersion("2020.3.0")]
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
 [assembly: System.Runtime.InteropServices.Guid("3628d589-e118-4c2c-bd8e-fdef6b6ed07c")]
 
