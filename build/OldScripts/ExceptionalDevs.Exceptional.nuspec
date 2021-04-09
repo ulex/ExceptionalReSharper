@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ExceptionalDevs.Exceptional.MF</id>
-    <version>2020.3.0</version>
+    <version>2021.1.0</version>
     <title>Exceptional for ReSharper by MF</title>
     <description>Analyzes thrown and documented C# exceptions and suggests improvements.</description>
     <authors>ExceptionalDevs - Updated by Mahmoud Fakhoury</authors>
@@ -11,7 +11,7 @@
     <tags>Exception XMLdoc</tags>
     <licenseUrl>https://github.com/CSharpAnalyzers/ExceptionalReSharper/blob/master/LICENSE.md</licenseUrl>
     <dependencies>
-      <dependency id="Wave" version="[203]" />
+      <dependency id="Wave" version="[211]" />
     </dependencies>
   </metadata>
   <files>
