@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>ExceptionalDevs.Exceptional.MF</id>
+    <version>2021.1.1</version>
+    <title>Exceptional by MF</title>
+    <description>Analyzes thrown and documented C# exceptions and suggests improvements.</description>
+    <authors>Mahmoud Fakhoury -- The source project was developed by ExceptionalDevs</authors>
+    <projectUrl>https://github.com/hhu-mahmoud/ExceptionalReSharper</projectUrl>
+    <copyright>Copyright © 2021 ExceptionalDevs</copyright>
+    <tags>Exception XMLdoc</tags>
+    <licenseUrl>https://github.com/hhu-mahmoud/ExceptionalReSharper/blob/master/LICENSE.md</licenseUrl>
+    <dependencies>
+      <dependency id="Wave" version="[211]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="lib\ReSharper.Exceptional.dll" target="DotFiles" />
+    <file src="lib\ReSharper.Exceptional.pdb" target="DotFiles" />
+  </files>
+</package>
