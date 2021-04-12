@@ -21,7 +21,7 @@ namespace ReSharper.Exceptional.Analyzers
         {
             // add a squiggle if the throwing a Exception (new Exception())
             // throw; statements are ignored
-            if (!thrownException.IsThrownFromThrowStatement || thrownException.FullName != "System.Exception" || thrownException.IsRethrow)
+            if (!thrownException.IsThrownFromThrowStatement || thrownException.ShortName != "Exception" || thrownException.IsRethrow)
             {
                 return;
             }

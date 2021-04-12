@@ -50,7 +50,7 @@ namespace ReSharper.Exceptional.Utilities
         /// <param name="context">The context. </param>
         public ICatchVariableDeclaration CreateCatchVariableDeclarationNode(IDeclaredType exceptionType, ITreeNode context)
         {
-            var tryStatement = _factory.CreateStatement("try {} catch(Exception e) {}") as ITryStatement;
+            var tryStatement = _factory.CreateStatement("try {} catch(Exception ex) {}") as ITryStatement;
             var catchClause = tryStatement?.Catches[0] as ISpecificCatchClause;
             var exceptionDeclaration = catchClause?.ExceptionDeclaration;
             if (exceptionDeclaration == null)
@@ -76,7 +76,7 @@ namespace ReSharper.Exceptional.Utilities
         {
             var tryStatement = _factory.CreateStatement(
                 "try {} catch(Exception $0) {$2    // TODO: Handle the $1$2}",
-                variableName,
+                "ex",
                 exceptionType.GetClrName().FullName,
                 Environment.NewLine) as ITryStatement;
             if (!(tryStatement?.Catches[0] is ISpecificCatchClause catchClause))
@@ -110,7 +110,7 @@ namespace ReSharper.Exceptional.Utilities
             var tryStatement = _factory.CreateStatement(
                 "try {} catch($0 $1) {$2    // TODO: Handle the $0$2}",
                 exceptionType.GetClrName().FullName,
-                exceptionVariableName,
+                "ex",
                 Environment.NewLine) as ITryStatement;
             if (tryStatement == null)
             {

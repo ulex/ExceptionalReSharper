@@ -180,7 +180,7 @@ namespace ReSharper.Exceptional.Models
 
         public IDeclaredType ExceptionType { get; }
 
-        public string FullName => ExceptionType.GetClrName().FullName;
+        public string ShortName => ExceptionType.GetClrName().ShortName;
 
         public bool IsCaught
         {

@@ -138,7 +138,7 @@ namespace ReSharper.Exceptional.Models
                 if (exceptionNode.Attributes != null)
                 {
                     var accessorNode = exceptionNode.Attributes["accessor"];
-                    var accessor = accessorNode != null ? accessorNode.Value : null;
+                    var accessor = accessorNode?.Value;
                     var exceptionType = exceptionNode.Attributes["cref"].Value;
                     if (exceptionType.StartsWith("T:"))
                     {

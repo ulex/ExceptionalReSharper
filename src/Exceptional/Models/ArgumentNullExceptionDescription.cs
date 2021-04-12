@@ -51,7 +51,7 @@ namespace ReSharper.Exceptional.Models
         /// </returns>
         public static ArgumentNullExceptionDescription CreateFrom(ThrownExceptionModel exception)
         {
-            if ("System.ArgumentNullException".Equals(exception.ExceptionType.GetClrName().FullName))
+            if ("ArgumentNullException".Equals(exception.ExceptionType.GetClrName().ShortName))
             {
                 return new ArgumentNullExceptionDescription(exception.ExceptionsOrigin.Node as IThrowStatement);
             }

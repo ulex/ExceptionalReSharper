@@ -63,7 +63,7 @@
     <PackageReference Include="JetBrains.RdFramework">
       <Version>2020.3.1</Version>
     </PackageReference>
-    <PackageReference Include="JetBrains.ReSharper.SDK" Version="2021.1.0">
+    <PackageReference Include="JetBrains.ReSharper.SDK" Version="2021.1.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -172,7 +172,7 @@
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
-    <MSBuildCommunityTasksPath>$(SolutionDir)\..\build\MSBuildTasks</MSBuildCommunityTasksPath>
+    <MSBuildCommunityTasksPath>$(SolutionDir)\..\build\New\MSBuildTasks</MSBuildCommunityTasksPath>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

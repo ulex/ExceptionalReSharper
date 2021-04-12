@@ -42,7 +42,7 @@ namespace ReSharper.Exceptional.QuickFixes
 
         #region properties
 
-        public override string Text => string.Format(Resources.QuickFixCatchException, Error.ThrownException.ExceptionType.GetClrName().FullName);
+        public override string Text => string.Format(Resources.QuickFixCatchException, Error.ThrownException.ExceptionType.GetClrName().ShortName);
 
         private ExceptionNotDocumentedOptionalHighlighting Error { get; }
 

@@ -35,7 +35,7 @@ namespace ReSharper.Exceptional.Highlightings
 
         /// <summary>Gets the message which is shown in the editor. </summary>
         protected override string Message =>
-            string.Format(Resources.HighlightNotThrownDocumentedExceptions, ExceptionDocumentation.ExceptionType.GetClrName().FullName);
+            string.Format(Resources.HighlightNotThrownDocumentedExceptions, ExceptionDocumentation.ExceptionType.GetClrName().ShortName);
 
         #endregion
     }

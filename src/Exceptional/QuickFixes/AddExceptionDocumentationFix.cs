@@ -59,7 +59,7 @@ namespace ReSharper.Exceptional.QuickFixes
                     textControl,
                     LiveTemplatesManager.EscapeAction.LeaveTextAndCaret,
                     fieldInfo);
-                hotspotSession.Execute();
+                hotspotSession.ExecuteAsync().Wait();
             };
         }
 
@@ -67,7 +67,7 @@ namespace ReSharper.Exceptional.QuickFixes
 
         #region properties
 
-        public override string Text => string.Format(Resources.QuickFixInsertExceptionDocumentation, Error.ThrownException.ExceptionType.GetClrName().FullName);
+        public override string Text => string.Format(Resources.QuickFixInsertExceptionDocumentation, Error.ThrownException.ExceptionType.GetClrName().ShortName);
 
         private ExceptionNotDocumentedOptionalHighlighting Error { get; }
 

@@ -40,7 +40,7 @@ namespace ReSharper.Exceptional.Highlightings
             get
             {
                 var exceptionType = ThrownException.ExceptionType;
-                var exceptionTypeName = exceptionType != null ? exceptionType.GetClrName().FullName : "[NOT RESOLVED]";
+                var exceptionTypeName = exceptionType != null ? exceptionType.GetClrName().ShortName : "[NOT RESOLVED]";
                 return Constants.OptionalPrefix + string.Format(Resources.HighlightNotDocumentedExceptions, exceptionTypeName);
             }
         }

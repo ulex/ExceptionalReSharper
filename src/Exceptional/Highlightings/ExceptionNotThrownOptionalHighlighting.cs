@@ -38,7 +38,7 @@ namespace ReSharper.Exceptional.Highlightings
         protected override string Message =>
             Constants.OptionalPrefix + string.Format(
                 Resources.HighlightNotThrownDocumentedExceptions,
-                ExceptionDocumentation.ExceptionType.GetClrName().FullName);
+                ExceptionDocumentation.ExceptionType.GetClrName().ShortName);
 
         /// <summary>Gets the exception documentation. </summary>
         internal ExceptionDocCommentModel ExceptionDocumentation { get; }

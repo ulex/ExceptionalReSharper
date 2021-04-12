@@ -36,9 +36,9 @@
             var exceptionType = GetExceptionType();
             var exceptionDescription = GetThrownExceptionMessage(throwExpression);
             string accessor = null;
-            if (containingBlock is AccessorDeclarationModel)
+            if (containingBlock is AccessorDeclarationModel model)
             {
-                accessor = ((AccessorDeclarationModel)containingBlock).Node.NameIdentifier.Name;
+                accessor = model.Node.NameIdentifier.Name;
             }
             _thrownException = new ThrownExceptionModel(analyzeUnit, this, exceptionType, exceptionDescription, false, accessor);
         }
@@ -107,8 +107,7 @@
         public TextRange[] AddInnerException(string variableName)
         {
             var ranges = new List<TextRange>();
-            var objectCreationExpressionNode = Node.Exception as IObjectCreationExpression;
-            if (objectCreationExpressionNode == null)
+            if (!(Node.Exception is IObjectCreationExpression objectCreationExpressionNode))
             {
                 return new TextRange[0];
             }
@@ -144,16 +143,11 @@
 
         public bool IsInnerExceptionPassed(string variableName)
         {
-            var objectCreationExpressionNode = Node.Exception as IObjectCreationExpression;
-            if (objectCreationExpressionNode == null)
+            if (!(Node.Exception is IObjectCreationExpression objectCreationExpressionNode))
             {
                 return false;
             }
-            if (objectCreationExpressionNode.Arguments.Count < 1)
-            {
-                return false;
-            }
-            return objectCreationExpressionNode.Arguments.Any(a => a.GetText().Equals(variableName));
+            return objectCreationExpressionNode.Arguments.Count >= 1 && objectCreationExpressionNode.Arguments.Any(a => a.GetText().Equals(variableName));
         }
 
         /// <summary>Checks whether this throw statement throws given <paramref name="exceptionType" />.</summary>

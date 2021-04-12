@@ -15,6 +15,7 @@ namespace ReSharper.Exceptional.Models
     using JetBrains.ReSharper.Psi.ExtensionsAPI;
     using JetBrains.ReSharper.Psi.Resolve;
     using JetBrains.ReSharper.Psi.Tree;
+    using JetBrains.Util.Extension;
 
     /// <summary>Stores data about processed <see cref="IDocCommentBlockNode" />. </summary>
     internal sealed class DocCommentBlockModel : TreeElementModelBase<IDocCommentBlock>
@@ -55,7 +56,7 @@ namespace ReSharper.Exceptional.Models
             var exceptionDescription = thrownException.ExceptionDescription.Trim();
             if (thrownException.ExceptionsOrigin is ThrowStatementModel)
             {
-                if (thrownException.ExceptionType.GetClrName().FullName == "System.ArgumentNullException")
+                if (thrownException.ExceptionType.GetClrName().ShortName == "ArgumentNullException")
                 {
                     exceptionDescription = ArgumentNullExceptionDescription.CreateFrom(thrownException).GetDescription().Trim();
                 }
@@ -64,17 +65,39 @@ namespace ReSharper.Exceptional.Models
             {
                 exceptionDescription = Regex.Replace(exceptionDescription, "<paramref name=\"(.*?)\"/>", m => m.Groups[1].Value).Trim();
             }
-            var exceptionDocumentation = string.IsNullOrEmpty(exceptionDescription)
-                ? $"<exception cref=\"T:{thrownException.ExceptionType.GetClrName().FullName}\">" + Constants.ExceptionDescriptionMarker
-                                                                                                  + $".</exception>{Environment.NewLine}"
-                : $"<exception cref=\"T:{thrownException.ExceptionType.GetClrName().FullName}\">{exceptionDescription}</exception>{Environment.NewLine}";
-            if (thrownException.ExceptionsOrigin.ContainingBlock is AccessorDeclarationModel)
+            if (!string.IsNullOrEmpty(exceptionDescription) && exceptionDescription.Contains("cref=\"F:"))
             {
-                var accessor = ((AccessorDeclarationModel)thrownException.ExceptionsOrigin.ContainingBlock).Node.NameIdentifier.Name;
+                exceptionDescription = exceptionDescription.Replace("cref=\"F:", "cref=\"");
+            }
+            if (!string.IsNullOrEmpty(exceptionDescription) && exceptionDescription.Contains("cref=\"T:"))
+            {
+                exceptionDescription = exceptionDescription.Replace("cref=\"T:", "cref=\"");
+                var args = exceptionDescription.Split("/>");
+                foreach (var arg in args)
+                {
+                    if (!arg.Contains("cref="))
+                    {
+                        continue;
+                    }
+                    var startPos = arg.LastIndexOf("cref=", StringComparison.Ordinal) + "cref=".Length + 1;
+                    var length = arg.Length - 1 - startPos;
+                    var fullName = arg.Substring(startPos, length).Trim();
+                    var shortName = arg.Split(".").LastOrDefault()?.Trim();
+                    if (exceptionDescription.Contains(fullName))
+                    {
+                        exceptionDescription = exceptionDescription.Replace(fullName, shortName);
+                    }
+                }
+            }
+            var exceptionDocumentation = string.IsNullOrEmpty(exceptionDescription)
+                ? $"<exception cref=\"{thrownException.ExceptionType.GetClrName().ShortName}\">" + Constants.ExceptionDescriptionMarker + $".</exception>{Environment.NewLine}"
+                : $"<exception cref=\"{thrownException.ExceptionType.GetClrName().ShortName}\">{exceptionDescription}</exception>{Environment.NewLine}";
+            if (thrownException.ExceptionsOrigin.ContainingBlock is AccessorDeclarationModel model)
+            {
+                var accessor = model.Node.NameIdentifier.Name;
                 exceptionDocumentation = string.IsNullOrEmpty(exceptionDescription)
-                    ? $"<exception cref=\"T:{thrownException.ExceptionType.GetClrName().FullName}\" accessor=\"{accessor}\">"
-                    + Constants.ExceptionDescriptionMarker + $".</exception>{Environment.NewLine}"
-                    : $"<exception cref=\"T:{thrownException.ExceptionType.GetClrName().FullName}\" accessor=\"{accessor}\">{exceptionDescription}</exception>{Environment.NewLine}";
+                    ? $"<exception cref=\"{thrownException.ExceptionType.GetClrName().ShortName}\" accessor=\"{accessor}\">" + Constants.ExceptionDescriptionMarker + $".</exception>{Environment.NewLine}"
+                    : $"<exception cref=\"{thrownException.ExceptionType.GetClrName().ShortName}\" accessor=\"{accessor}\">{exceptionDescription}</exception>{Environment.NewLine}";
             }
             ChangeDocumentation(_documentationText + "\n" + exceptionDocumentation);
             return DocumentedExceptions.LastOrDefault();
@@ -108,7 +131,7 @@ namespace ReSharper.Exceptional.Models
                 }
                 else
                 {
-                    LowLevelModificationUtil.AddChildBefore(AnalyzeUnit.Node.FirstChild, newNode);
+                    LowLevelModificationUtil.AddChildBefore(AnalyzeUnit.Node.FirstChild ?? throw new InvalidOperationException(), newNode);
                 }
                 newNode.FormatNode();
                 Node = newNode;

@@ -119,7 +119,7 @@ namespace ReSharper.Exceptional.Models
             }
             var hasConditionalClause = Node.Filter != null;
             var rethrows = ContainsRethrowStatement(Node.Body);
-            var isSystemException = Node.ExceptionType.GetClrName().FullName == "System.Exception";
+            var isSystemException = Node.ExceptionType.GetClrName().ShortName == "Exception";
             return isSystemException && !hasConditionalClause && !rethrows;
         }
 

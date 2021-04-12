@@ -38,7 +38,7 @@ namespace ReSharper.Exceptional.QuickFixes
             string variableName;
             if (outerCatchClause.Node is ISpecificCatchClause specificCatchClause)
             {
-                variableName = specificCatchClause.ExceptionDeclaration.DeclaredName;
+                variableName = specificCatchClause.ExceptionDeclaration?.DeclaredName;
             }
             else
             {
@@ -64,7 +64,7 @@ namespace ReSharper.Exceptional.QuickFixes
             string variableName;
             if (outerCatchClause.Node is ISpecificCatchClause specificCatchClause)
             {
-                variableName = specificCatchClause.ExceptionDeclaration.DeclaredName;
+                variableName = specificCatchClause.ExceptionDeclaration?.DeclaredName;
             }
             else
             {

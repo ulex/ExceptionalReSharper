@@ -14,8 +14,7 @@ namespace ReSharper.Exceptional.Models.ExceptionsOrigins
 
     using Utilities;
 
-    internal class ThrowStatementModel : TreeElementModelBase<IThrowStatement>,
-        IExceptionsOriginModel
+    internal class ThrowStatementModel : TreeElementModelBase<IThrowStatement>, IExceptionsOriginModel
     {
         #region member vars
 
@@ -35,9 +34,9 @@ namespace ReSharper.Exceptional.Models.ExceptionsOrigins
             var exceptionType = GetExceptionType();
             var exceptionDescription = GetThrownExceptionMessage(throwStatement);
             string accessor = null;
-            if (containingBlock is AccessorDeclarationModel)
+            if (containingBlock is AccessorDeclarationModel model)
             {
-                accessor = ((AccessorDeclarationModel)containingBlock).Node.NameIdentifier.Name;
+                accessor = model.Node.NameIdentifier.Name;
             }
             _thrownException = new ThrownExceptionModel(analyzeUnit, this, exceptionType, exceptionDescription, false, accessor);
         }
@@ -58,21 +57,11 @@ namespace ReSharper.Exceptional.Models.ExceptionsOrigins
         public IBlockModel ContainingBlock { get; }
 
         /// <summary>Gets the document range of the throw statement which is highlighted. </summary>
-        public override DocumentRange DocumentRange
-        {
-            get
-            {
-                // if we have exceptiontype then highlight the type
-                if (Node.Exception != null)
-                {
-                    return Node.Exception.GetDocumentRange();
-                }
+        public override DocumentRange DocumentRange =>
+            // if we have exceptiontype then highlight the type
+            Node.Exception?.GetDocumentRange() ?? Node.ThrowKeyword.GetDocumentRange();
 
-                // otherwise highlight the throw keyword
-                return Node.ThrowKeyword.GetDocumentRange();
-            }
-        }
-
+        // otherwise highlight the throw keyword
         /// <summary>Gets the node. </summary>
         ITreeNode IExceptionsOriginModel.Node => Node;
 
@@ -106,8 +95,7 @@ namespace ReSharper.Exceptional.Models.ExceptionsOrigins
         public TextRange[] AddInnerException(string variableName)
         {
             var ranges = new List<TextRange>();
-            var objectCreationExpressionNode = Node.Exception as IObjectCreationExpression;
-            if (objectCreationExpressionNode == null)
+            if (!(Node.Exception is IObjectCreationExpression objectCreationExpressionNode))
             {
                 return new TextRange[0];
             }
@@ -152,8 +140,7 @@ namespace ReSharper.Exceptional.Models.ExceptionsOrigins
             {
                 return false;
             }
-            return objectCreationExpressionNode.Arguments.Any(
-                a => a.GetText().Equals(variableName) || a.GetText().Split(':').Last().Trim().Equals(variableName));
+            return objectCreationExpressionNode.Arguments.Any(a => a.GetText().Equals(variableName) || a.GetText().Split(':').Last().Trim().Equals(variableName));
         }
 
         /// <summary>Checks whether this throw statement throws given <paramref name="exceptionType" />.</summary>
@@ -173,21 +160,22 @@ namespace ReSharper.Exceptional.Models.ExceptionsOrigins
 
         private static string GetThrownExceptionMessage(IThrowStatement throwStatement)
         {
-            if (throwStatement.Exception is IObjectCreationExpression)
+            if (!(throwStatement.Exception is IObjectCreationExpression expression))
             {
-                var arguments = ((IObjectCreationExpression)throwStatement.Exception).Arguments;
-                if (arguments.Count > 0)
-                {
-                    var literal = arguments[0].Value as ICSharpLiteralExpression;
-                    if (literal != null && literal.Literal != null)
-                    {
-                        var exp = literal.Literal.Parent as ICSharpLiteralExpression;
-                        if (exp != null && exp.ConstantValue.Value != null)
-                        {
-                            return exp.ConstantValue.Value.ToString();
-                        }
-                    }
-                }
+                return string.Empty;
+            }
+            var arguments = expression.Arguments;
+            if (arguments.Count <= 0)
+            {
+                return string.Empty;
+            }
+            if (!(arguments[0].Value is ICSharpLiteralExpression literal) || literal.Literal == null)
+            {
+                return string.Empty;
+            }
+            if (literal.Literal.Parent is ICSharpLiteralExpression exp && exp.ConstantValue.Value != null)
+            {
+                return exp.ConstantValue.Value.ToString();
             }
             return string.Empty;
         }
