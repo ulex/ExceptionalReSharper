@@ -13,7 +13,7 @@
 [assembly: System.Reflection.AssemblyProduct("Exceptional")]
 [assembly: System.Reflection.AssemblyCompany("Mahmoud Fakhoury -- The source project was developed by ExceptionalDevs")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright © 2021 ExceptionalDevs")]
-[assembly: System.Reflection.AssemblyVersion("2021.1.1")]
+[assembly: System.Reflection.AssemblyVersion("2021.2.0")]
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
 [assembly: System.Runtime.InteropServices.Guid("3628d589-e118-4c2c-bd8e-fdef6b6ed07c")]
 
