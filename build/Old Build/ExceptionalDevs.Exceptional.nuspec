@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ExceptionalDevs.Exceptional.MF</id>
-    <version>2021.2.0</version>
+    <version>2021.2.2</version>
     <title>Exceptional by MF</title>
     <description>Analyzes thrown and documented C# exceptions and suggests improvements.</description>
     <authors>Mahmoud Fakhoury -- The source project was developed by ExceptionalDevs</authors>
