@@ -45,8 +45,7 @@ namespace ReSharper.Exceptional.QuickFixes
             {
                 return null;
             }
-            var copyExceptionDescription = string.IsNullOrEmpty(insertedExceptionModel.ExceptionDescription)
-                                        || insertedExceptionModel.ExceptionDescription.Contains("[MARKER]");
+            var copyExceptionDescription = string.IsNullOrEmpty(insertedExceptionModel.ExceptionDescription) || insertedExceptionModel.ExceptionDescription.Contains("[MARKER]");
             var exceptionDescription = copyExceptionDescription ? "Condition" : insertedExceptionModel.ExceptionDescription.Trim();
             var nameSuggestionsExpression = new NameSuggestionsExpression(new[] { exceptionDescription });
             var field = new TemplateField("name", nameSuggestionsExpression, 0);
@@ -59,7 +58,7 @@ namespace ReSharper.Exceptional.QuickFixes
                     textControl,
                     LiveTemplatesManager.EscapeAction.LeaveTextAndCaret,
                     fieldInfo);
-                hotspotSession.ExecuteAsync().Wait();
+                hotspotSession.ExecuteAndForget();
             };
         }
 
