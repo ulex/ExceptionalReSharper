@@ -27,7 +27,7 @@ namespace ReSharper.Exceptional.Models
                     var containingType = constructorDeclaration.DeclaredElement.GetContainingType();
                     var baseClass = containingType?.GetSuperTypes().FirstOrDefault(t => !t.IsInterfaceType());
                     var baseClassTypeElement = baseClass?.GetTypeElement();
-                    var defaultBaseConstructor = baseClassTypeElement?.Constructors.First(c => c.IsDefault);
+                    var defaultBaseConstructor = baseClassTypeElement?.Constructors.FirstOrDefault(c => c.IsDefault);
                     if (defaultBaseConstructor != null)
                     {
                         ThrownExceptions.Add(new ConstructorInitializerModel(this, defaultBaseConstructor, this));
