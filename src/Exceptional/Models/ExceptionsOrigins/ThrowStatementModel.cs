@@ -151,7 +151,7 @@ namespace ReSharper.Exceptional.Models.ExceptionsOrigins
 
         private IDeclaredType GetExceptionType()
         {
-            if (Node.Exception != null)
+            if (Node?.Exception != null)
             {
                 return Node.Exception.GetExpressionType() as IDeclaredType;
             }
