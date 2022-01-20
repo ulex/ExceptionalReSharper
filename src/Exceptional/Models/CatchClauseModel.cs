@@ -74,8 +74,7 @@ namespace ReSharper.Exceptional.Models
                 var exceptionType = (IUserDeclaredTypeUsage)specificNode.ExceptionTypeUsage;
                 var exceptionTypeName = exceptionType.TypeName.NameIdentifier.Name;
                 var tempTry = GetElementFactory().CreateStatement("try {} catch($0 $1) {}", exceptionTypeName, variableName) as ITryStatement;
-                var tempCatch = tempTry?.Catches[0] as ISpecificCatchClause;
-                if (tempCatch == null)
+                if (!(tempTry?.Catches[0] is ISpecificCatchClause tempCatch))
                 {
                     return;
                 }
@@ -90,11 +89,7 @@ namespace ReSharper.Exceptional.Models
             {
                 return false;
             }
-            if (Node.ExceptionType == null)
-            {
-                return false;
-            }
-            return exception.IsSubtypeOf(Node.ExceptionType);
+            return Node?.ExceptionType != null && exception.IsSubtypeOf(Node.ExceptionType);
         }
 
         /// <summary>Checks whether the block catches the given exception. </summary>

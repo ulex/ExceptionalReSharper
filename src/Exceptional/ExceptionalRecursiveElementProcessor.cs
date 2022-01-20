@@ -15,7 +15,6 @@
     {
         #region member vars
 
-        private readonly CSharpDaemonStageProcessBase _daemonProcess;
         private readonly List<IDocCommentBlock> _eventComments = new List<IDocCommentBlock>();
 
         private IProcessContext _currentContext;
@@ -26,7 +25,6 @@
 
         public ExceptionalRecursiveElementProcessor(CSharpDaemonStageProcessBase daemonProcess)
         {
-            _daemonProcess = daemonProcess;
             _currentContext = new NullProcessContext();
         }
 
@@ -41,112 +39,88 @@
 
         public void ProcessAfterInterior(ITreeNode element)
         {
-            if (element is IMethodDeclaration)
+            switch (element)
             {
-                _currentContext.RunAnalyzers();
-            }
-            else if (element is IEventDeclaration)
-            {
-                _currentContext.RunAnalyzers();
-            }
-            else if (element is IAccessorOwnerDeclaration)
-            {
-                _currentContext.RunAnalyzers();
-            }
-            else if (element is IAccessorDeclaration)
-            {
-                //_currentContext.RunAnalyzers(_daemonProcess, _settings); // Already analyzed by accessor owner
-                _currentContext.LeaveAccessor();
-            }
-            else if (element is IConstructorDeclaration)
-            {
-                _currentContext.RunAnalyzers();
-            }
-            else if (element is ITryStatement)
-            {
-                _currentContext.LeaveTryBlock();
-            }
-            else if (element is ICatchClause)
-            {
-                _currentContext.LeaveCatchClause();
+                case IMethodDeclaration _:
+                case IEventDeclaration _:
+                case IAccessorOwnerDeclaration _:
+                    _currentContext.RunAnalyzers();
+                    break;
+                case IAccessorDeclaration _:
+                    //_currentContext.RunAnalyzers(_daemonProcess, _settings); // Already analyzed by accessor owner
+                    _currentContext.LeaveAccessor();
+                    break;
+                case IConstructorDeclaration _:
+                    _currentContext.RunAnalyzers();
+                    break;
+                case ITryStatement _:
+                    _currentContext.LeaveTryBlock();
+                    break;
+                case ICatchClause _:
+                    _currentContext.LeaveCatchClause();
+                    break;
             }
         }
 
         public void ProcessBeforeInterior(ITreeNode element)
         {
-            if (element is IThrowStatement)
+            switch (element)
             {
-                _currentContext.Process(element as IThrowStatement);
-            }
-            else if (element is ICatchVariableDeclaration)
-            {
-                _currentContext.Process(element as ICatchVariableDeclaration);
-            }
-            else if (element is IReferenceExpression)
-            {
-                _currentContext.Process(element as IReferenceExpression);
-            }
-            else if (element is IObjectCreationExpression)
-            {
-                _currentContext.Process(element as IObjectCreationExpression);
-            }
-            if (element is IMethodDeclaration)
-            {
-                var methodDeclaration = element as IMethodDeclaration;
-                _currentContext = new MethodProcessContext();
-                _currentContext.StartProcess(new MethodDeclarationModel(methodDeclaration));
-            }
-            else if (element is IConstructorDeclaration)
-            {
-                var constructorDeclaration = element as IConstructorDeclaration;
-                _currentContext = new ConstructorProcessContext();
-                _currentContext.StartProcess(new ConstructorDeclarationModel(constructorDeclaration));
-            }
-            else if (element is IEventDeclaration)
-            {
-                var eventDeclaration = element as IEventDeclaration;
-                _currentContext = new EventProcessContext();
-                _currentContext.StartProcess(new EventDeclarationModel(eventDeclaration));
-                foreach (var doc in _eventComments)
+                case IThrowStatement statement:
+                    _currentContext.Process(statement);
+                    break;
+                case ICatchVariableDeclaration declaration:
+                    _currentContext.Process(declaration);
+                    break;
+                case IReferenceExpression expression:
+                    _currentContext.Process(expression);
+                    break;
+                case IObjectCreationExpression creationExpression:
+                    _currentContext.Process(creationExpression);
+                    break;
+                case IMethodDeclaration methodDeclaration:
+                    _currentContext = new MethodProcessContext();
+                    _currentContext.StartProcess(new MethodDeclarationModel(methodDeclaration));
+                    break;
+                case IConstructorDeclaration constructorDeclaration:
+                    _currentContext = new ConstructorProcessContext();
+                    _currentContext.StartProcess(new ConstructorDeclarationModel(constructorDeclaration));
+                    break;
+                case IEventDeclaration eventDeclaration:
                 {
-                    _currentContext.Process(doc);
+                    _currentContext = new EventProcessContext();
+                    _currentContext.StartProcess(new EventDeclarationModel(eventDeclaration));
+                    foreach (var doc in _eventComments)
+                    {
+                        _currentContext.Process(doc);
+                    }
+                    _eventComments.Clear();
+                    break;
                 }
-                _eventComments.Clear();
-            }
-            else if (element is IAccessorOwnerDeclaration)
-            {
-                var accessorOwnerDeclaration = element as IAccessorOwnerDeclaration;
-                _currentContext = new AccessorOwnerProcessContext();
-                _currentContext.StartProcess(new AccessorOwnerDeclarationModel(accessorOwnerDeclaration));
-            }
-            else if (element is IAccessorDeclaration)
-            {
-                _currentContext.EnterAccessor(element as IAccessorDeclaration);
-            }
-            else if (element is IDocCommentBlock)
-            {
-                if (_currentContext.Model == null || _currentContext.Model.Node == element.Parent)
-                {
-                    _currentContext.Process(element as IDocCommentBlock);
-                }
-                else
-                {
-                    _eventComments.Add((IDocCommentBlock)element);
+                case IAccessorOwnerDeclaration accessorOwnerDeclaration:
+                    _currentContext = new AccessorOwnerProcessContext();
+                    _currentContext.StartProcess(new AccessorOwnerDeclarationModel(accessorOwnerDeclaration));
+                    break;
+                case IAccessorDeclaration declaration:
+                    _currentContext.EnterAccessor(declaration);
+                    break;
+                case IDocCommentBlock block when _currentContext.Model == null || _currentContext.Model.Node == block.Parent:
+                    _currentContext.Process(block);
+                    break;
+                case IDocCommentBlock block:
+                    _eventComments.Add(block);
                     // HACK: Event documentation blocks are processed before event declaration, 
                     // other documentation blocks are processed after the associated element declaration
-                }
-            }
-            else if (element is IThrowExpression)
-            {
-                _currentContext.Process(element as IThrowExpression);
-            }
-            else if (element is ITryStatement)
-            {
-                _currentContext.EnterTryBlock(element as ITryStatement);
-            }
-            else if (element is ICatchClause)
-            {
-                _currentContext.EnterCatchClause(element as ICatchClause);
+                    break;
+                case IThrowExpression expression:
+                    _currentContext.Process(expression);
+                    break;
+                case ITryStatement tryStatement:
+                    _currentContext.EnterTryBlock(tryStatement);
+                    break;
+                case ICatchClause clause:
+                    _currentContext.EnterCatchClause(clause);
+                    break;
             }
         }
 

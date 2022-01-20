@@ -22,16 +22,17 @@ namespace ReSharper.Exceptional.Models
             }
             else
             {
-                if (constructorDeclaration.DeclaredElement?.IsDefault == true)
+                if (constructorDeclaration.DeclaredElement?.IsDefault != true)
                 {
-                    var containingType = constructorDeclaration.DeclaredElement.GetContainingType();
-                    var baseClass = containingType?.GetSuperTypes().FirstOrDefault(t => !t.IsInterfaceType());
-                    var baseClassTypeElement = baseClass?.GetTypeElement();
-                    var defaultBaseConstructor = baseClassTypeElement?.Constructors.FirstOrDefault(c => c.IsDefault);
-                    if (defaultBaseConstructor != null)
-                    {
-                        ThrownExceptions.Add(new ConstructorInitializerModel(this, defaultBaseConstructor, this));
-                    }
+                    return;
+                }
+                var containingType = constructorDeclaration.DeclaredElement.GetContainingType();
+                var baseClass = containingType?.GetSuperTypes().FirstOrDefault(t => !t.IsInterfaceType());
+                var baseClassTypeElement = baseClass?.GetTypeElement();
+                var defaultBaseConstructor = baseClassTypeElement?.Constructors.FirstOrDefault(c => c.IsDefault);
+                if (defaultBaseConstructor != null)
+                {
+                    ThrownExceptions.Add(new ConstructorInitializerModel(this, defaultBaseConstructor, this));
                 }
             }
         }

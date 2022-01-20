@@ -41,8 +41,7 @@ namespace ReSharper.Exceptional.Models
             }
             foreach (var declaration in declarations)
             {
-                var docCommentBlockOwnerNode = declaration as IDocCommentBlockOwner;
-                if (docCommentBlockOwnerNode == null)
+                if (!(declaration is IDocCommentBlockOwner docCommentBlockOwnerNode))
                 {
                     return result;
                 }
