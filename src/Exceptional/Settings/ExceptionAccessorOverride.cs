@@ -39,7 +39,7 @@ namespace ReSharper.Exceptional.Settings
             }
             catch (Exception ex)
             {
-                Logger.LogException(string.Format("[Exceptional] Error loading excluded method exception '{0}'", ExceptionType), ex);
+                Logger.LogException($"[Exceptional] Error loading excluded method exception '{ExceptionType}'", ex);
             }
             finally
             {

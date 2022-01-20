@@ -42,6 +42,7 @@ namespace ReSharper.Exceptional
         }
 
         /// <exception cref="OperationCanceledException">The process has been cancelled. </exception>
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public override void Execute(Action<DaemonStageResult> commiter)
         {
             var file = ServiceLocator.Process.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) as ICSharpFile;

@@ -1,2 +1,1 @@
 nuget pack ExceptionalDevs.Exceptional.nuspec -OutputDirectory ../Packages
-pause
