@@ -23,11 +23,11 @@ For locally installation: [Installation](Installation.md)
 
 Check out the extension in the ReSharper plugin gallery (targets the latest R# version): 
  
-- [Exceptional for ReSharper](https://resharper-plugins.jetbrains.com/packages/ExceptionalDevs.Exceptional/)
+- [Exceptional for ReSharper](https://resharper-plugins.jetbrains.com/packages/ExceptionalDevs.Exceptional.MF/)
 
 Check out old versions: 
 
-- [Exceptional for ReSharper - All versions](https://plugins.jetbrains.com/plugin/11674-exceptional-for-resharper/versions)
+- [Exceptional for ReSharper - All versions](https://plugins.jetbrains.com/plugin/14928-exceptional-by-mf/versions)
 
 ## Features
 
