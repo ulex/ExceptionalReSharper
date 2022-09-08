@@ -12,7 +12,7 @@ Generally, the public API should be documented and thrown exceptions should be p
 
 ## Installation
 
-Requires ReSharper v8.2, v9, v10 or later
+Requires ReSharper
 
 - Open the ReSharper menu in Visual Studio and select Extension Manager... 
 - Search for Exceptional and install the extension
@@ -80,7 +80,3 @@ Check out old versions:
 **Warning:** Throwing System.Exception should be avoided.
 
 More features to come...
-
-
-
-(This project has originally been [hosted on CodePlex](https://exceptional.codeplex.com/))
