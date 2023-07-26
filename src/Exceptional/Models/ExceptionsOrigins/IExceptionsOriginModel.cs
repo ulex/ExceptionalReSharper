@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional.Models.ExceptionsOrigins
+namespace ReSharper.Exceptional.MF.Models.ExceptionsOrigins
 {
     using System.Collections.Generic;
 

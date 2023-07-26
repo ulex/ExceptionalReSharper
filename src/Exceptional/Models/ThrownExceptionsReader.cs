@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional.Models
+namespace ReSharper.Exceptional.MF.Models
 {
     using System.Collections.Generic;
     using System.Linq;

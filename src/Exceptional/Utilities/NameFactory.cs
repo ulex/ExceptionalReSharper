@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional.Utilities
+namespace ReSharper.Exceptional.MF.Utilities
 {
     using System;
     using System.Linq;

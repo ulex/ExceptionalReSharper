@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional
+namespace ReSharper.Exceptional.MF
 {
     using System;
 

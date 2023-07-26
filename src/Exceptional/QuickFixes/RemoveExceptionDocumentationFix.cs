@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional.QuickFixes
+namespace ReSharper.Exceptional.MF.QuickFixes
 {
     using System;
 

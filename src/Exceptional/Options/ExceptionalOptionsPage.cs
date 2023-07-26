@@ -1,4 +1,4 @@
-﻿namespace ReSharper.Exceptional.Options
+﻿namespace ReSharper.Exceptional.MF.Options
 {
     using JetBrains.Application.UI.Options;
     using JetBrains.Application.UI.Options.OptionsDialog;
@@ -8,7 +8,7 @@
     {
         #region constants
 
-        public const string Name = "Exceptional";
+        public const string Name = "Exceptional - MF";
         public const string Pid = "Exceptional";
 
         #endregion

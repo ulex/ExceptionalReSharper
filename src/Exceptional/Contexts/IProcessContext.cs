@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional.Contexts
+namespace ReSharper.Exceptional.MF.Contexts
 {
     using JetBrains.ReSharper.Psi.CSharp.Tree;
     using JetBrains.ReSharper.Psi.Tree;

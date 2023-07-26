@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional.Highlightings
+namespace ReSharper.Exceptional.MF.Highlightings
 {
     using System;
 

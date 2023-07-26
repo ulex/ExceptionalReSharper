@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>ExceptionalDevs.Exceptional.MF</id>
-    <version>2023.1.2</version>
+    <version>2023.1.4</version>
     <title>Exceptional by MF</title>
     <description>Analyzes thrown and documented C# exceptions and suggests improvements.</description>
     <authors>Mahmoud Fakhoury</authors>
@@ -15,7 +15,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="lib\ReSharper.Exceptional.dll" target="DotFiles" />
-    <file src="lib\ReSharper.Exceptional.pdb" target="DotFiles" />
+    <file src="lib\ReSharper.Exceptional.MF.dll" target="DotFiles" />
+    <file src="lib\ReSharper.Exceptional.MF.pdb" target="DotFiles" />
   </files>
 </package>

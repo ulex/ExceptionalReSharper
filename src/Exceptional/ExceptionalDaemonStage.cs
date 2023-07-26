@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional
+namespace ReSharper.Exceptional.MF
 {
     using JetBrains.Application.BuildScript.Application.Zones;
     using JetBrains.Application.Settings;

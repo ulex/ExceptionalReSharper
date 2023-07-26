@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Application.Settings;
-using JetBrains.Application.Settings.WellKnownRootKeys;
-using JetBrains.ReSharper.Psi;
-using JetBrains.Util.Logging;
-
-namespace ReSharper.Exceptional.Settings
+﻿namespace ReSharper.Exceptional.MF.Settings
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using JetBrains.Application.Settings;
+    using JetBrains.Application.Settings.WellKnownRootKeys;
+    using JetBrains.ReSharper.Psi;
+    using JetBrains.Util.Logging;
+
     [SettingsKey(typeof(EnvironmentSettings), "Exceptional Settings")]
     public class ExceptionalSettings
     {
-        [SettingsEntry(true, "Inspect public methods")]
+        [SettingsEntry(true, "Public methods")]
         public bool InspectPublicMethods { get; set; }
 
-        [SettingsEntry(true, "Inspect internal methods")]
+        [SettingsEntry(true, "Internal methods")]
         public bool InspectInternalMethods { get; set; }
 
-        [SettingsEntry(true, "Inspect protected methods")]
+        [SettingsEntry(true, "Protected methods")]
         public bool InspectProtectedMethods { get; set; }
 
-        [SettingsEntry(false, "Inspect private methods")]
+        [SettingsEntry(false, "Private methods")]
         public bool InspectPrivateMethods { get; set; }
 
 

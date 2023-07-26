@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional.Analyzers
+namespace ReSharper.Exceptional.MF.Analyzers
 {
     using System.Linq;
     using System.Text.RegularExpressions;

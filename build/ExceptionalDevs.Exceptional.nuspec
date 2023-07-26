@@ -15,7 +15,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\src\Exceptional\bin\$Configuration$\ReSharper.Exceptional.dll" target="DotFiles" />
-    <file src="..\src\Exceptional\bin\$Configuration$\ReSharper.Exceptional.pdb" target="DotFiles" />
+    <file src="..\src\Exceptional\bin\$Configuration$\ReSharper.Exceptional.MF.dll" target="DotFiles" />
+    <file src="..\src\Exceptional\bin\$Configuration$\ReSharper.Exceptional.MF.pdb" target="DotFiles" />
   </files>
 </package>

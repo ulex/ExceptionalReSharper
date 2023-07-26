@@ -1,4 +1,4 @@
-﻿namespace ReSharper.Exceptional.Options
+﻿namespace ReSharper.Exceptional.MF.Options
 {
     public static class OptionsLabels
     {
@@ -6,10 +6,10 @@
         {
             #region constants
 
-            public const string InspectInternalMethodsAndProperties = "Inspect internal methods";
-            public const string InspectPrivateMethodsAndProperties = "Inspect private methods";
-            public const string InspectProtectedMethodsAndProperties = "Inspect protected methods";
-            public const string InspectPublicMethodsAndProperties = "Inspect public methods";
+            public const string InspectInternalMethodsAndProperties = "Internal methods";
+            public const string InspectPrivateMethodsAndProperties = "Private methods";
+            public const string InspectProtectedMethodsAndProperties = "Protected methods";
+            public const string InspectPublicMethodsAndProperties = "Public methods";
 
             #endregion
         }

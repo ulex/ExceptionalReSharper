@@ -1,4 +1,4 @@
-namespace ReSharper.Exceptional.Contexts
+namespace ReSharper.Exceptional.MF.Contexts
 {
     using System.Collections.Generic;
 

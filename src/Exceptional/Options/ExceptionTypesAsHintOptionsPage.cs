@@ -1,4 +1,4 @@
-﻿namespace ReSharper.Exceptional.Options
+﻿namespace ReSharper.Exceptional.MF.Options
 {
     using JetBrains.Application.Settings;
     using JetBrains.Application.UI.Options;
