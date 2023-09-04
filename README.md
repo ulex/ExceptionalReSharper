@@ -1,5 +1,5 @@
 # News: Update Version 2023.2.1:
-***The new version 2023.2.1 is already uploaded to Jetbrains Store but unfortunately, they did not approved it yet, because of another fork. The owner of the fork has uploaded the the version with to the marketplace also without changing anything but the name. I reported it to JetBrains team and still waiting. You can install the package locally if you cannot wait... Please download the package from the link then install it in your resharper : https://github.com/hhu-mahmoud/ExceptionalReSharper/blob/master/build/Packages/ExceptionalDevs.Exceptional.MF.2023.2.1.nupkg***
+***The new version 2023.2.1 is already uploaded to JetBrains Store but unfortunately, they did not approved it yet, because of another fork. The owner of the another fork has uploaded the the version with to the marketplace also without changing anything but the name and that makes conflict by install,if both are installed. I reported it to JetBrains team and still waiting. You can install the package locally if you cannot wait... Please download the package from the link then install it in your resharper : https://github.com/hhu-mahmoud/ExceptionalReSharper/blob/master/build/Packages/ExceptionalDevs.Exceptional.MF.2023.2.1.nupkg***
 
 # Exceptional for ReSharper
 
