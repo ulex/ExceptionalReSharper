@@ -29,6 +29,8 @@
         {
             CreateCheckboxInspectPublic(lifetime, optionsSettingsSmartContext.StoreOptionsTransactionContext);
             CreateDocumentationSection(lifetime, optionsSettingsSmartContext.StoreOptionsTransactionContext);
+            AddEmptyLine();
+            AddText(OptionsLabels.General.ExtensionVersion);
         }
 
         #endregion

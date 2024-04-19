@@ -18,11 +18,15 @@
         {
             #region constants
 
+            private static readonly System.Reflection.Assembly Assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            private static readonly System.Diagnostics.FileVersionInfo Fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(Assembly.Location);
+            private static readonly string Version = Fvi.FileVersion;
             public const string DelegateInvocationsMayThrowSystemException = "Delegate invocations may throw System.Exception";
 
             public const string DocumentationOfThrownExceptionsSubtypeHeader = "Documentation of thrown exception's subtype is sufficient...";
             public const string IsDocumentationOfExceptionSubtypeSufficientForReferenceExpressions = "... for method or property invocations";
             public const string IsDocumentationOfExceptionSubtypeSufficientForThrowStatements = "... for throw statements";
+            public static readonly string ExtensionVersion = @$"Exceptional by MF - Version: {Version}";
 
             #endregion
         }
