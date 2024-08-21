@@ -56,7 +56,7 @@ namespace ReSharper.Exceptional.MF
             {
                 throw new OperationCanceledException();
             }
-            commiter(new DaemonStageResult(_consumer.Highlightings));
+            commiter(new DaemonStageResult(_consumer.CollectHighlightings()));
         }
 
         #endregion

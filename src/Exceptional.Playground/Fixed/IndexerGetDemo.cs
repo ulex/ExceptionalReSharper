@@ -7,7 +7,14 @@ namespace Exceptional.Playground.Fixed
         public void Foo()
         {
             var demo = new IndexerGetDemo();
-            var bar = demo["foo"]; // Warning on indexer
+            try
+            {
+                var bar = demo["foo"]; // Warning on indexer
+            }
+            catch (SecurityException ex)
+            {
+                // TODO: Handle the System.Security.SecurityException
+            }
         }
         
         /// <exception cref="SecurityException">Foo</exception>
