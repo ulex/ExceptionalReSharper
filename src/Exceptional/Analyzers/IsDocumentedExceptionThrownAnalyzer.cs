@@ -19,6 +19,10 @@ namespace ReSharper.Exceptional.MF.Analyzers
             {
                 return;
             }
+            if (IsConstructor(exceptionDocumentation))
+            {
+                return;
+            }
             if (IsAbstractOrInterfaceMethod(exceptionDocumentation))
             {
                 return;
@@ -37,7 +41,12 @@ namespace ReSharper.Exceptional.MF.Analyzers
                 : new ExceptionNotThrownHighlighting(exceptionDocumentation);
             ServiceLocator.StageProcess.AddHighlighting(highlighting, exceptionDocumentation.DocumentRange);
         }
-
+        private static bool IsConstructor(ModelBase exceptionDocumentation)
+        {
+            var declaredElement = (exceptionDocumentation.AnalyzeUnit as ConstructorDeclarationModel)?.Node.DeclaredElement;
+            var isConstructor = declaredElement != null;
+            return isConstructor && !ServiceLocator.Settings.InspectConstructors;
+        }
         private static bool IsAbstractOrInterfaceMethod(ModelBase exceptionDocumentation)
         {
             var declaredElement = (exceptionDocumentation.AnalyzeUnit as MethodDeclarationModel)?.Node.DeclaredElement;

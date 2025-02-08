@@ -60,11 +60,7 @@ namespace ReSharper.Exceptional.MF.Models
             {
                 return false;
             }
-            if (exceptionType == null)
-            {
-                return false;
-            }
-            return ExceptionType.Equals(exceptionType);
+            return exceptionType != null && ExceptionType.Equals(exceptionType);
         }
 
         /// <summary>Checks whether the thrown exception is the same as <paramref name="exceptionDocumentation" />.</summary>
@@ -87,11 +83,7 @@ namespace ReSharper.Exceptional.MF.Models
             {
                 return false;
             }
-            if (exceptionDocumentation.ExceptionType == null)
-            {
-                return false;
-            }
-            return ExceptionType.IsSubtypeOf(exceptionDocumentation.ExceptionType);
+            return exceptionDocumentation.ExceptionType != null && ExceptionType.IsSubtypeOf(exceptionDocumentation.ExceptionType);
         }
 
         private void CheckAccessorOverride(IExceptionsOriginModel exceptionsOrigin, IDeclaredType exceptionType)
@@ -202,10 +194,7 @@ namespace ReSharper.Exceptional.MF.Models
         {
             get
             {
-                if (!_isExceptionDocumented.HasValue)
-                {
-                    _isExceptionDocumented = IsExceptionDocumentedInternal(IsException);
-                }
+                _isExceptionDocumented ??= IsExceptionDocumentedInternal(IsException);
                 return _isExceptionDocumented.Value;
             }
         }
@@ -215,10 +204,7 @@ namespace ReSharper.Exceptional.MF.Models
         {
             get
             {
-                if (!_isExceptionOrSubtypeDocumented.HasValue)
-                {
-                    _isExceptionOrSubtypeDocumented = IsExceptionDocumentedInternal(IsExceptionOrSubtype);
-                }
+                _isExceptionOrSubtypeDocumented ??= IsExceptionDocumentedInternal(IsExceptionOrSubtype);
                 return _isExceptionOrSubtypeDocumented.Value;
             }
         }
@@ -235,11 +221,9 @@ namespace ReSharper.Exceptional.MF.Models
         {
             get
             {
-                if (!_isThrownFromAnonymousMethod.HasValue)
-                {
-                    var parent = ExceptionsOrigin.Node;
-                    _isThrownFromAnonymousMethod = IsParentAnonymousMethodExpression(parent);
-                }
+                if (_isThrownFromAnonymousMethod.HasValue) return _isThrownFromAnonymousMethod.Value;
+                var parent = ExceptionsOrigin.Node;
+                _isThrownFromAnonymousMethod = IsParentAnonymousMethodExpression(parent);
                 return _isThrownFromAnonymousMethod.Value;
             }
         }
@@ -293,10 +277,7 @@ namespace ReSharper.Exceptional.MF.Models
                         break;
                     }
                 }
-                if (_isWrongAccessor == null)
-                {
-                    _isWrongAccessor = false;
-                }
+                _isWrongAccessor ??= false;
                 return _isWrongAccessor.Value;
             }
         }

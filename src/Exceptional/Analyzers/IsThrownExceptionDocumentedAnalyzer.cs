@@ -25,6 +25,10 @@ namespace ReSharper.Exceptional.MF.Analyzers
             {
                 return;
             }
+            if (IsConstructor(thrownException))
+            {
+                return;
+            }
             if (!thrownException.AnalyzeUnit.IsInspectionRequired || thrownException.IsCaught || thrownException.IsExceptionDocumented)
             {
                 return;
@@ -48,7 +52,12 @@ namespace ReSharper.Exceptional.MF.Analyzers
                 ServiceLocator.StageProcess.AddHighlighting(highlighting, thrownException.DocumentRange);
             }
         }
-
+        private static bool IsConstructor(ModelBase thrownException)
+        {
+            var declaredElement = (thrownException.AnalyzeUnit as ConstructorDeclarationModel)?.Node.DeclaredElement;
+            var isConstructor = declaredElement != null;
+            return isConstructor && !ServiceLocator.Settings.InspectConstructors;
+        }
         private bool IsSubtypeDocumented(ThrownExceptionModel thrownException)
         {
             if (thrownException.IsThrownFromThrowStatement)

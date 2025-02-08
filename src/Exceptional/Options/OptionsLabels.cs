@@ -10,6 +10,7 @@
             public const string InspectPrivateMethodsAndProperties = "Private methods";
             public const string InspectProtectedMethodsAndProperties = "Protected methods";
             public const string InspectPublicMethodsAndProperties = "Public methods";
+            public const string InspectConstructorsProperties = "Constructors";
 
             #endregion
         }

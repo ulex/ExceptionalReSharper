@@ -110,17 +110,13 @@ namespace ReSharper.Exceptional.MF.Models
 
         public static IEnumerable<ThrownExceptionModel> Read(IAnalyzeUnit analyzeUnit, ObjectCreationExpressionModel objectCreationExpression)
         {
-            var declaredElement = objectCreationExpression.Node.ConstructorReference.Resolve().DeclaredElement;
+            var declaredElement = objectCreationExpression.Node?.ConstructorReference?.Resolve()?.DeclaredElement;
             if (declaredElement == null)
             {
-                return Enumerable.Empty<ThrownExceptionModel>();
+                return [];
             }
             var xmlDoc = declaredElement.GetXMLDoc(true);
-            if (xmlDoc == null)
-            {
-                return Enumerable.Empty<ThrownExceptionModel>();
-            }
-            return Read(analyzeUnit, objectCreationExpression, xmlDoc);
+            return xmlDoc == null ? [] : Read(analyzeUnit, objectCreationExpression, xmlDoc);
         }
 
         private static IEnumerable<ThrownExceptionModel> Read(IAnalyzeUnit analyzeUnit, IExceptionsOriginModel exceptionsOrigin, XmlNode xmlDoc)

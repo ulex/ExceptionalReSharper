@@ -31,6 +31,7 @@
             CreateCheckboxInspectInternal(lifetime, optionsSettingsSmartContext.StoreOptionsTransactionContext);
             CreateCheckboxInspectProtected(lifetime, optionsSettingsSmartContext.StoreOptionsTransactionContext);
             CreateCheckboxInspectPrivate(lifetime, optionsSettingsSmartContext.StoreOptionsTransactionContext);
+            CreateCheckboxInspectConstructors(lifetime, optionsSettingsSmartContext.StoreOptionsTransactionContext);
         }
 
         #endregion
@@ -103,6 +104,23 @@
                     storeOptionsTransactionContext.SetValue((ExceptionalSettings key) => key.InspectPublicMethods, a.New);
                 });
             AddBoolOption((ExceptionalSettings key) => key.InspectPublicMethods, OptionsLabels.InspectionLevel.InspectPublicMethodsAndProperties);
+        }
+
+        private void CreateCheckboxInspectConstructors(Lifetime lifetime, IContextBoundSettingsStoreLive storeOptionsTransactionContext)
+        {
+            IProperty<bool> property = new Property<bool>(lifetime, "Exceptional::InspectionLevel::InspectConstructorsAndProperties");
+            property.SetValue(storeOptionsTransactionContext.GetValue((ExceptionalSettings key) => key.InspectConstructors));
+            property.Change.Advise(
+                lifetime,
+                a =>
+                {
+                    if (!a.HasNew)
+                    {
+                        return;
+                    }
+                    storeOptionsTransactionContext.SetValue((ExceptionalSettings key) => key.InspectConstructors, a.New);
+                });
+            AddBoolOption((ExceptionalSettings key) => key.InspectConstructors, OptionsLabels.InspectionLevel.InspectConstructorsProperties);
         }
 
         #endregion

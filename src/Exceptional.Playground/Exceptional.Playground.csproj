@@ -45,6 +45,7 @@
     <Compile Include="Demonstration.cs" />
     <Compile Include="EventMayThrowException.cs" />
     <Compile Include="Fixed\CSharp7Features.cs" />
+    <Compile Include="Fixed\InspectConstructor.cs" />
     <Compile Include="Fixed\EventRegistrationShowsWarning.cs" />
     <Compile Include="Fixed\AddingElementToListDoesNotShowException.cs" />
     <Compile Include="Fixed\ExceptionOnInterfaceMarkedAsUnnecessary.cs" />

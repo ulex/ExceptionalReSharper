@@ -1,4 +1,5 @@
-﻿namespace Exceptional.Playground
+﻿
+namespace Exceptional.Playground
 {
     using System;
     using System.Security;
@@ -6,6 +7,11 @@
     public class CatchAllClause
     {
         #region methods
+        
+        public CatchAllClause()
+        {
+            throw new SecurityException();
+        }
 
         public void Test01()
         {

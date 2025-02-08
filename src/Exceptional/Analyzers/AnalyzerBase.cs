@@ -1,3 +1,5 @@
+using JetBrains.ReSharper.UnitTestExplorer.Resources;
+
 namespace ReSharper.Exceptional.MF.Analyzers
 {
     using Models;

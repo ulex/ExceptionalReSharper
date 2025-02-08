@@ -38,8 +38,7 @@ namespace ReSharper.Exceptional.MF.Models
         {
             get
             {
-                var accessRightsOwner = Node as IAccessRightsOwner;
-                if (accessRightsOwner == null)
+                if (Node is not IAccessRightsOwner accessRightsOwner)
                 {
                     return false;
                 }
@@ -48,9 +47,11 @@ namespace ReSharper.Exceptional.MF.Models
                 var inspectProtectedMethods = ServiceLocator.Settings.InspectProtectedMethods;
                 var inspectPrivateMethods = ServiceLocator.Settings.InspectPrivateMethods;
                 var rights = accessRightsOwner.GetAccessRights();
-                return rights == AccessRights.PUBLIC && inspectPublicMethods || rights == AccessRights.INTERNAL && inspectInternalMethods
-                                                                             || rights == AccessRights.PROTECTED && inspectProtectedMethods
-                                                                             || rights == AccessRights.PRIVATE && inspectPrivateMethods;
+                return 
+                    rights == AccessRights.PUBLIC && inspectPublicMethods || 
+                    rights == AccessRights.INTERNAL && inspectInternalMethods || 
+                    rights == AccessRights.PROTECTED && inspectProtectedMethods || 
+                    rights == AccessRights.PRIVATE && inspectPrivateMethods;
             }
         }
 

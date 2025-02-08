@@ -45,13 +45,12 @@ namespace ReSharper.Exceptional.MF
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public override void Execute(Action<DaemonStageResult> commiter)
         {
-            var file = ServiceLocator.Process.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) as ICSharpFile;
-            if (file == null)
+            if (ServiceLocator.Process.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) is not ICSharpFile file)
             {
                 return;
             }
             var elementProcessor = new ExceptionalRecursiveElementProcessor(this);
-            file.ProcessDescendants(elementProcessor);
+            file.ProcessThisAndDescendants(elementProcessor);
             if (ServiceLocator.Process.InterruptFlag)
             {
                 throw new OperationCanceledException();
